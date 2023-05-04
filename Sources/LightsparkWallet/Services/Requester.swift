@@ -22,7 +22,6 @@ public final class Requester {
         self.baseURLString = baseURLString
 
         let configuration = URLSessionConfiguration.default
-        let userAgentString = Self.userAgentString
         var additionalHeaders: [AnyHashable: Any] = [
             "Authorization": authorization,
             "User-Agent": Self.userAgentString,

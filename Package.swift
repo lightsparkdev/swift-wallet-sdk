@@ -25,5 +25,6 @@ let package = Package(
             name: "LightsparkWalletTests",
             dependencies: ["LightsparkWallet"]
         ),
-    ]
+    ],
+    swiftLanguageVersions: [.v5]
 )
