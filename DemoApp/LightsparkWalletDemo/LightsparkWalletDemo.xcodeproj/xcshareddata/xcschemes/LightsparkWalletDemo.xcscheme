@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   LastUpgradeVersion = "1430"
+   version = "1.7">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F730AD2929F354E700B504B3"
+               BuildableName = "LightsparkWalletDemo.app"
+               BlueprintName = "LightsparkWalletDemo"
+               ReferencedContainer = "container:LightsparkWalletDemo.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldAutocreateTestPlan = "YES">
+   </TestAction>
+   <LaunchAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      ignoresPersistentStateOnLaunch = "NO"
+      debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
+      allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "F730AD2929F354E700B504B3"
+            BuildableName = "LightsparkWalletDemo.app"
+            BlueprintName = "LightsparkWalletDemo"
+            ReferencedContainer = "container:LightsparkWalletDemo.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "WALLET_2_JWT"
+            value = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2FwaS5saWdodHNwYXJrLmNvbSIsInN1YiI6IndhbGxldC10ZXN0LTMiLCJ0ZXN0Ijp0cnVlLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTY4NTA3MzM2M30.yNj72dri-HDA_s5yh2xoQXTGN1zkkHmNUrQXehn6Z_8xlK_6K3BCgdc2c2sZqmwgWnDygPRM6mY9_iOJi7iWXA"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "ACCOUNT_ID"
+            value = "Account:01876857-7113-9af2-0000-b404f37226a2"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "WALLET_1_JWT"
+            value = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2FwaS5saWdodHNwYXJrLmNvbSIsInN1YiI6IndhbGxldC10ZXN0LTEiLCJ0ZXN0Ijp0cnVlLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTY4NTA3MzM2M30.ZYuITWlikiSP0C596r3xIwFXCVrGDNb0zdHm64hiHdv35JNLtSXKmUKmLzcgIkU3W6o7WrFPxmg5KqiKg3LRlQ"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
+   </LaunchAction>
+   <ProfileAction
+      buildConfiguration = "Release"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "F730AD2929F354E700B504B3"
+            BuildableName = "LightsparkWalletDemo.app"
+            BlueprintName = "LightsparkWalletDemo"
+            ReferencedContainer = "container:LightsparkWalletDemo.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Release"
+      revealArchiveInOrganizer = "YES">
+   </ArchiveAction>
+</Scheme>

@@ -1,0 +1,6 @@
+version: 3
+
+project:
+  id: lightspark/swift-wallet-sdk
+  name: swift-wallet-sdk
+  url: https://github.com/lightsparkdev/swift-wallet-sdk

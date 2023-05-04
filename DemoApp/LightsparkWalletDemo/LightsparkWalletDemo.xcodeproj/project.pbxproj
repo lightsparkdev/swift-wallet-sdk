@@ -1,0 +1,408 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F730AD2E29F354E800B504B3 /* LightsparkWalletDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F730AD2D29F354E800B504B3 /* LightsparkWalletDemoApp.swift */; };
+		F730AD3029F354E800B504B3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F730AD2F29F354E800B504B3 /* ContentView.swift */; };
+		F730AD3229F354E800B504B3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F730AD3129F354E800B504B3 /* Assets.xcassets */; };
+		F730AD3529F354E800B504B3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F730AD3429F354E800B504B3 /* Preview Assets.xcassets */; };
+		F7671E9A2A01D7DE00545775 /* WalletSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7671E992A01D7DE00545775 /* WalletSetupView.swift */; };
+		F7671E9C2A01DC1F00545775 /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7671E9B2A01DC1F00545775 /* WalletView.swift */; };
+		F7671EA02A01E2F400545775 /* WalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7671E9F2A01E2F400545775 /* WalletViewModel.swift */; };
+		F7D904522A042694002F5993 /* LightsparkWallet in Frameworks */ = {isa = PBXBuildFile; productRef = F7D904512A042694002F5993 /* LightsparkWallet */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		F730AD2A29F354E800B504B3 /* LightsparkWalletDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LightsparkWalletDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F730AD2D29F354E800B504B3 /* LightsparkWalletDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightsparkWalletDemoApp.swift; sourceTree = "<group>"; };
+		F730AD2F29F354E800B504B3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F730AD3129F354E800B504B3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F730AD3429F354E800B504B3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		F7671E992A01D7DE00545775 /* WalletSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSetupView.swift; sourceTree = "<group>"; };
+		F7671E9B2A01DC1F00545775 /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
+		F7671E9F2A01E2F400545775 /* WalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletViewModel.swift; sourceTree = "<group>"; };
+		F7671EA32A04263F00545775 /* lightspark-wallet-swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "lightspark-wallet-swift"; path = ../..; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F730AD2729F354E700B504B3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F7D904522A042694002F5993 /* LightsparkWallet in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F730AD2129F354E700B504B3 = {
+			isa = PBXGroup;
+			children = (
+				F730AD3B29F3550800B504B3 /* Packages */,
+				F730AD2C29F354E800B504B3 /* LightsparkWalletDemo */,
+				F730AD2B29F354E800B504B3 /* Products */,
+				F730AD3F29F3552300B504B3 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		F730AD2B29F354E800B504B3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F730AD2A29F354E800B504B3 /* LightsparkWalletDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F730AD2C29F354E800B504B3 /* LightsparkWalletDemo */ = {
+			isa = PBXGroup;
+			children = (
+				F7671E982A01D71100545775 /* Views */,
+				F730AD2D29F354E800B504B3 /* LightsparkWalletDemoApp.swift */,
+				F730AD3129F354E800B504B3 /* Assets.xcassets */,
+				F730AD3329F354E800B504B3 /* Preview Content */,
+				F7671E9F2A01E2F400545775 /* WalletViewModel.swift */,
+			);
+			path = LightsparkWalletDemo;
+			sourceTree = "<group>";
+		};
+		F730AD3329F354E800B504B3 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				F730AD3429F354E800B504B3 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		F730AD3B29F3550800B504B3 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				F7671EA32A04263F00545775 /* lightspark-wallet-swift */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		F730AD3F29F3552300B504B3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F7671E982A01D71100545775 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F730AD2F29F354E800B504B3 /* ContentView.swift */,
+				F7671E992A01D7DE00545775 /* WalletSetupView.swift */,
+				F7671E9B2A01DC1F00545775 /* WalletView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F730AD2929F354E700B504B3 /* LightsparkWalletDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F730AD3829F354E800B504B3 /* Build configuration list for PBXNativeTarget "LightsparkWalletDemo" */;
+			buildPhases = (
+				F730AD2629F354E700B504B3 /* Sources */,
+				F730AD2729F354E700B504B3 /* Frameworks */,
+				F730AD2829F354E700B504B3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F7D904502A04268D002F5993 /* PBXTargetDependency */,
+			);
+			name = LightsparkWalletDemo;
+			packageProductDependencies = (
+				F7D904512A042694002F5993 /* LightsparkWallet */,
+			);
+			productName = LightsparkWalletDemo;
+			productReference = F730AD2A29F354E800B504B3 /* LightsparkWalletDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F730AD2229F354E700B504B3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					F730AD2929F354E700B504B3 = {
+						CreatedOnToolsVersion = 14.3;
+					};
+				};
+			};
+			buildConfigurationList = F730AD2529F354E700B504B3 /* Build configuration list for PBXProject "LightsparkWalletDemo" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F730AD2129F354E700B504B3;
+			productRefGroup = F730AD2B29F354E800B504B3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F730AD2929F354E700B504B3 /* LightsparkWalletDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F730AD2829F354E700B504B3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F730AD3529F354E800B504B3 /* Preview Assets.xcassets in Resources */,
+				F730AD3229F354E800B504B3 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F730AD2629F354E700B504B3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F730AD3029F354E800B504B3 /* ContentView.swift in Sources */,
+				F7671E9C2A01DC1F00545775 /* WalletView.swift in Sources */,
+				F7671E9A2A01D7DE00545775 /* WalletSetupView.swift in Sources */,
+				F7671EA02A01E2F400545775 /* WalletViewModel.swift in Sources */,
+				F730AD2E29F354E800B504B3 /* LightsparkWalletDemoApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F7D904502A04268D002F5993 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = F7D9044F2A04268D002F5993 /* LightsparkWallet */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		F730AD3629F354E800B504B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F730AD3729F354E800B504B3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F730AD3929F354E800B504B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"LightsparkWalletDemo/Preview Content\"";
+				DEVELOPMENT_TEAM = P542WHH8T9;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightspark.LightsparkWalletDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F730AD3A29F354E800B504B3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"LightsparkWalletDemo/Preview Content\"";
+				DEVELOPMENT_TEAM = P542WHH8T9;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightspark.LightsparkWalletDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F730AD2529F354E700B504B3 /* Build configuration list for PBXProject "LightsparkWalletDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F730AD3629F354E800B504B3 /* Debug */,
+				F730AD3729F354E800B504B3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F730AD3829F354E800B504B3 /* Build configuration list for PBXNativeTarget "LightsparkWalletDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F730AD3929F354E800B504B3 /* Debug */,
+				F730AD3A29F354E800B504B3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F7D9044F2A04268D002F5993 /* LightsparkWallet */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LightsparkWallet;
+		};
+		F7D904512A042694002F5993 /* LightsparkWallet */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LightsparkWallet;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = F730AD2229F354E700B504B3 /* Project object */;
+}
