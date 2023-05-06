@@ -3,6 +3,39 @@
 This is a Swift Wallet SDK for the Lightspark Wallet APIs. It can be used from an iOS environment
 to integrate with a Lightspark Lightning wallet.
 
+## Installation
+
+### Swift Package Manager
+Lightspark Wallet SDK is compatible with Swift Package Manager v5 (Swift 5 and above). Simply add
+it to the dependencies in your Package.swift.
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/lightsparkdev/swift-wallet-sdk.git", )
+]
+```
+And then add it to your target dependencies:
+
+```
+targets: [
+    .target(
+        name: "MyProject",
+        dependencies: [
+            .product(name: "LightsparkWallet", package: "swift-wallet-sdk"),
+        ]
+    ),
+    .testTarget(
+        name: "MyProjectTests",
+        dependencies: ["MyProject"])
+]
+```
+
+After the installation you can import `LightsparkWallet` in your `.swift` files.
+
+```swift
+import LightsparkWallet
+```
+
 ## Get started
 
 The main entry point for the SDK is `WalletClient`. To initialize a `WalletClient`, an

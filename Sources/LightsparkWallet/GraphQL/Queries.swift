@@ -51,7 +51,7 @@ enum Queries {
             $encoded_payment_request: String!
             $amount_msats: Long
         ) {
-            lightning_fee_estimate_for_node(input: {
+            lightning_fee_estimate_for_invoice(input: {
                 encoded_payment_request: $encoded_payment_request,
                 amount_msats: $amount_msats
             }) {

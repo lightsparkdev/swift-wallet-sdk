@@ -33,6 +33,7 @@ class WalletViewModel: ObservableObject {
     @Published var outgoingPayment: OutgoingPayment? = nil
     @Published var numberOfPaymentRequest: Int? = nil
     @Published var numberOfTransactions: Int? = nil
+    @Published var feeEstimate: CurrencyAmount? = nil
 
     var accountID: String {
         didSet {
@@ -255,9 +256,28 @@ class WalletViewModel: ObservableObject {
             .store(in: &self.cancellables)
     }
 
+    func feeEstimate(invoice: String) {
+        guard let walletClient = walletClient else {
+            return
+        }
+        walletClient.lightningFeeEstimateForInvoicePublisher(encodedPaymentRequest: invoice, amountMSats: nil)
+            .receive(on: RunLoop.main)
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    print(error)
+                }
+            } receiveValue: { output in
+                self.feeEstimate = output.feeEstimate
+            }
+            .store(in: &self.cancellables)
+    }
+
     private func setupDidChange() {
-        self.viewModelState = self.accountID.count > 0 && self.walletToken.count > 0 ? .notLoggedIn : .notSetup
-        self.privateKey = try? Keys.getRSAPrivateKey(tag: self.keyTag)
+        let tokenSetup = self.accountID.count > 0 && self.walletToken.count > 0
+        self.viewModelState = tokenSetup ? .notLoggedIn : .notSetup
+        if tokenSetup {
+            self.privateKey = try? Keys.getRSAPrivateKey(tag: self.keyTag)
+        }
     }
 
     private var walletClient: WalletClient? = nil

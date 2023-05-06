@@ -58,11 +58,12 @@ struct WalletView: View {
                     }
 
                     Text(
-                        "Wallet Available Balance: \(self.viewModel.wallet?.balances?.accountingBalanceL1.originalValue ?? 0) \(self.viewModel.wallet?.balances?.accountingBalanceL1.originalUnit.rawValue ?? "Sats")"
+                        "Wallet Available Balance: \(self.viewModel.wallet?.balances?.ownedBalance.originalValue ?? 0) \(self.viewModel.wallet?.balances?.ownedBalance.originalUnit.rawValue ?? "Sats")"
                     )
 
                     if self.invoice != nil {
                         Text("Invoice Created: \(self.invoice ?? "")")
+                            .textSelection(.enabled)
                     }
 
                     if self.incomingInvoice != nil {
@@ -78,6 +79,7 @@ struct WalletView: View {
 
                     if let outgoingPayment = self.viewModel.outgoingPayment {
                         Text("Payment Sent: \(outgoingPayment.id) \(outgoingPayment.status.rawValue)")
+                            .textSelection(.enabled)
                     }
 
                     if let transactionCount = self.viewModel.numberOfTransactions {
@@ -86,6 +88,10 @@ struct WalletView: View {
 
                     if let paymentRequestCount = self.viewModel.numberOfPaymentRequest {
                         Text("There are: \(paymentRequestCount) payment requests.")
+                    }
+
+                    if let feeEstimate = self.viewModel.feeEstimate {
+                        Text("Fees: \(feeEstimate.originalValue) \(feeEstimate.originalUnit.rawValue)")
                     }
 
                 }
@@ -105,6 +111,13 @@ struct WalletView: View {
                     Button("Decode Invoice") {
                         if let invoice = self.incomingInvoice {
                             self.viewModel.decodeInvoice(invoice: invoice)
+                        }
+                    }
+                    .disabled(self.viewModel.walletState != .ready || self.incomingInvoice == nil)
+
+                    Button("Fees") {
+                        if let invoice = self.incomingInvoice {
+                            self.viewModel.feeEstimate(invoice: invoice)
                         }
                     }
                     .disabled(self.viewModel.walletState != .ready || self.incomingInvoice == nil)

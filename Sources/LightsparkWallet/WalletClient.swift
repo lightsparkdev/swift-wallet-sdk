@@ -361,7 +361,7 @@ extension WalletClient {
     /// - Parameter signingKey: The private key to use to sign the payment.
     ///
     /// - Returns: A `PayInvoiceOutput` object.
-    public func payInvoicePublisher(
+    public func payInvoice(
         encodedInvoice: String,
         amountMSats: Int64?,
         maximumFeeMSats: Int64,
@@ -422,7 +422,7 @@ extension WalletClient {
     /// - Parameter timeout: The timeout in seconds for the payment.
     /// - Parameter signingKey: The private key to use to sign the payment.
     /// - Parameter completion: A closure that will be called when the request is completed.
-    public func sendPaymentPublisher(
+    public func sendPayment(
         destinationPublicKey: String,
         amountMSats: Int64,
         maximumFeeMSats: Int64,
@@ -542,10 +542,12 @@ extension WalletClient {
         encodedPaymentRequest: String,
         amountMSats: Int64?
     ) -> AnyPublisher<LightningFeeEstimateOutput, Error> {
-        let variables: [AnyHashable: Any?] = [
+        var variables: [AnyHashable: Any] = [
             "encoded_payment_request": encodedPaymentRequest,
-            "amount_msats": amountMSats,
         ]
+        if let amountMSats = amountMSats {
+            variables["amount_msats"] = amountMSats
+        }
 
         return self.executeRequestPublisher(operation: Queries.lightningFeeEstimateForInvoice, variables: variables)
     }
@@ -560,10 +562,12 @@ extension WalletClient {
         amountMSats: Int64?,
         completion: @escaping (LightningFeeEstimateOutput?, Error?) -> Void
     ) {
-        let variables: [AnyHashable: Any?] = [
+        var variables: [AnyHashable: Any] = [
             "encoded_payment_request": encodedPaymentRequest,
-            "amount_msats": amountMSats,
         ]
+        if let amountMSats = amountMSats {
+            variables["amount_msats"] = amountMSats
+        }
 
         self.executeRequest(
             operation: Queries.lightningFeeEstimateForInvoice,
@@ -578,14 +582,16 @@ extension WalletClient {
     /// - Parameter amountMSats: The amount of the payment in milli-satoshis.
     ///
     /// - Returns: A `LightningFeeEstimateOutput` object.
-    public func lightningFeeEstimateForInvoicePublisher(
+    public func lightningFeeEstimateForInvoice(
         encodedPaymentRequest: String,
         amountMSats: Int64?
     ) async throws -> LightningFeeEstimateOutput {
-        let variables: [AnyHashable: Any?] = [
+        var variables: [AnyHashable: Any] = [
             "encoded_payment_request": encodedPaymentRequest,
-            "amount_msats": amountMSats,
         ]
+        if let amountMSats = amountMSats {
+            variables["amount_msats"] = amountMSats
+        }
 
         return try await self.executeRequest(operation: Queries.lightningFeeEstimateForInvoice, variables: variables)
     }
