@@ -36,20 +36,31 @@ extension Keys {
     }
 
     public static func generateNewRSASigningKeyPair(
-        tag: String,
+        tag: String? = nil,
         permanent: Bool = false
     ) throws -> (SecKey, SecKey) {
-        guard let tag = tag.data(using: .utf8) else {
-            throw KeysError.tagParsingError
+        let attributes: [String: Any];
+        if permanent {
+            guard let tag = tag?.data(using: .utf8) else {
+                throw KeysError.tagParsingError
+            }
+            attributes = [
+                kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+                kSecAttrKeySizeInBits as String: 2048,
+                kSecPrivateKeyAttrs as String: [
+                    kSecAttrIsPermanent as String: permanent,
+                    kSecAttrApplicationTag as String: tag,
+                ] as [String: Any?],
+            ]
+        } else {
+            attributes = [
+                kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+                kSecAttrKeySizeInBits as String: 2048,
+                kSecPrivateKeyAttrs as String: [
+                    kSecAttrIsPermanent as String: permanent,
+                ] as [String: Any?],
+            ]
         }
-        let attributes: [String: Any] = [
-            kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
-            kSecAttrKeySizeInBits as String: 2048,
-            kSecPrivateKeyAttrs as String: [
-                kSecAttrIsPermanent as String: permanent,
-                kSecAttrApplicationTag as String: tag,
-            ] as [String: Any],
-        ]
 
         var error: Unmanaged<CFError>?
         guard let privateKey = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
