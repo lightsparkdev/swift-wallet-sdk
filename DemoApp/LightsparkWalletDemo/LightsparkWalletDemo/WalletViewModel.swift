@@ -68,9 +68,9 @@ class WalletViewModel: ObservableObject {
     }
 
     func login() {
-        let authManager = JWTAuthManager(accountID: self.accountID, secret: self.walletToken)
+        let authManager = JWTAuthManager()
         self.viewModelState = .loading
-        authManager.login { access, error in
+        authManager.login(accountID: self.accountID, secret: self.walletToken) { access, error in
             guard let access = access else {
                 DispatchQueue.main.async {
                     self.viewModelState = .error(error)
@@ -78,7 +78,7 @@ class WalletViewModel: ObservableObject {
                 return
             }
 
-            let walletClient = WalletClient(authorization: "Bearer \(access)")
+            let walletClient = WalletClient(accessToken: access)
             self.walletClient = walletClient
             self.walletStatusListener = WalletStatusListener(client: walletClient)
             DispatchQueue.main.async {

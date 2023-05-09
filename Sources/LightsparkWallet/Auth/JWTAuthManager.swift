@@ -9,19 +9,19 @@
 import Combine
 import Foundation
 
-struct JWTToken: Codable {
+struct AccessToken: Codable {
     var token: String
     var expiration: Date
 }
 
 public class JWTAuthManager {
-    public init(accountID: String, secret: String, authStateStorage: AuthStateStorage = UserDefaultAuthStorage()) {
-        self.accountID = accountID
-        self.secret = secret
+    public init(authStateStorage: AuthStateStorage = UserDefaultAuthStorage()) {
         self.authStateStorage = authStateStorage
     }
 
     public func login(
+        accountID: String,
+        secret: String,
         baseURLString: String? = nil,
         additionalHttpHeaders: [AnyHashable: Any] = [:],
         completion: @escaping (String?, Error?) -> Void
@@ -64,7 +64,7 @@ public class JWTAuthManager {
                 )
                 if let data = response.data {
                     let output = data
-                    let token = JWTToken(token: output.accessToken, expiration: output.validUntil)
+                    let token = AccessToken(token: output.accessToken, expiration: output.validUntil)
                     let tokenData = try JSONEncoder().encode(token)
                     self.authStateStorage.storeAuthStateData(data: tokenData)
                     completion(token.token, nil)
@@ -82,7 +82,7 @@ public class JWTAuthManager {
         guard let authTokenData = self.authStateStorage.getAuthStateData() else {
             return nil
         }
-        guard let token = try? JSONDecoder().decode(JWTToken.self, from: authTokenData) else {
+        guard let token = try? JSONDecoder().decode(AccessToken.self, from: authTokenData) else {
             return nil
         }
         guard token.expiration.timeIntervalSince(Date()) > 0 else {
@@ -92,8 +92,6 @@ public class JWTAuthManager {
         return token.token
     }
 
-    private let accountID: String
-    private let secret: String
     private let authStateStorage: AuthStateStorage
 
     private let jwtMutation = """

@@ -39,11 +39,10 @@ import LightsparkWallet
 ## Get started
 
 The main entry point for the SDK is `WalletClient`. To initialize a `WalletClient`, an
-authorization token is needed. The `authorization` field is the string to put in the http request
-header's `authorization` field.
+access token is needed. The `accessToken` can be aquired through `JWTAuthManager`.
 
 ```swift
-let walletClient = WalletClient(authorization: "Bearer \(accessToken)")
+let walletClient = WalletClient(accessToken: accessToken)
 ``` 
 
 For each operation in the `WalletClient`, we provide 3 different ways to use it:
@@ -132,13 +131,13 @@ Now on the client, you can login using the JWT and your company's account ID fro
 page:
 
 ```swift
-let authManager = JWTAuthManager(accountID: self.accountID, secret: self.walletToken)
-authManager.login { accessToken, error in
+let authManager = JWTAuthManager()
+authManager.login(accountID: self.accountID, secret: self.walletToken) { accessToken, error in
     guard let access = access else {
 		// handle error
         return
     }
-    let walletClient = WalletClient(authorization: "Bearer \(accessToken)")
+    let walletClient = WalletClient(accessToken: accessToken)
 }
 ````
 

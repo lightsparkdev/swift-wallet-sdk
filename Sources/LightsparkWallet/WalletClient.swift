@@ -27,12 +27,12 @@ public class WalletClient {
     /// Parameter baseURLString: The graphql endpoint base url. Will use default endpoint if not set.
     /// Parameter httpAdditionalHeaders: Addition header fields to put in the requests.
     public init(
-        authorization: String,
+        accessToken: String,
         baseURLString: String? = nil,
         httpAdditionalHeaders: [AnyHashable: Any]? = nil
     ) {
         self.requester = Requester(
-            authorization: authorization,
+            authorization: "Bearer \(accessToken)",
             baseURLString: baseURLString,
             httpAdditionalHeaders: httpAdditionalHeaders
         )

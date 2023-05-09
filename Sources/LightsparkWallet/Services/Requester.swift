@@ -11,9 +11,6 @@ import Foundation
 
 /// A class for making Lightspark GraphQL requests.
 public final class Requester {
-    public enum RequesterError: Error {
-        case invalidOperation
-    }
     public init(
         authorization: String,
         baseURLString: String? = nil,
