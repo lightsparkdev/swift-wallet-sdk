@@ -23,7 +23,7 @@ public enum WalletClientError: Error {
 public class WalletClient {
     /// Initialize the wallet client
     ///
-    /// Parameter authorization: The authorization field for the http header.
+    /// Parameter accessToken: The accessToken to send in the http header.
     /// Parameter baseURLString: The graphql endpoint base url. Will use default endpoint if not set.
     /// Parameter httpAdditionalHeaders: Addition header fields to put in the requests.
     public init(
