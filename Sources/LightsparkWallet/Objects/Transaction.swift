@@ -20,6 +20,8 @@ public protocol Transaction: Entity, Decodable {
 }
 
 public enum TransactionEnum {
+    case channelClosingTransaction(ChannelClosingTransaction)
+    case channelOpeningTransaction(ChannelOpeningTransaction)
     case deposit(Deposit)
     case incomingPayment(IncomingPayment)
     case outgoingPayment(OutgoingPayment)
@@ -36,6 +38,12 @@ extension TransactionEnum: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let typename = try container.decode(String.self, forKey: .__typename)
         switch typename {
+        case "ChannelClosingTransaction":
+            let channelClosingTransaction = try ChannelClosingTransaction(from: decoder)
+            self = .channelClosingTransaction(channelClosingTransaction)
+        case "ChannelOpeningTransaction":
+            let channelOpeningTransaction = try ChannelOpeningTransaction(from: decoder)
+            self = .channelOpeningTransaction(channelOpeningTransaction)
         case "Deposit":
             let deposit = try Deposit(from: decoder)
             self = .deposit(deposit)

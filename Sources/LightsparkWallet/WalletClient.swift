@@ -80,7 +80,7 @@ extension WalletClient {
     /// - Parameter signingPublicKey: The public key of the wallet. The key is a RSA key.
     ///
     /// - Returns: A publisher that emits a `InitializeWalletOutput` object or an error.
-    public func initializeWalletPublisher(signingPublicKey: SecKey) -> AnyPublisher<InitializeWalletOutput, Error> {
+    public func initializeWalletPublisher(signingPublicKey: SecKey, privateSigningKey: SecKey) -> AnyPublisher<InitializeWalletOutput, Error> {
         let keyString: String
         do {
             keyString = try Keys.base64StringRepresentationForPublicKey(publicKey: signingPublicKey)
@@ -92,7 +92,7 @@ extension WalletClient {
             "signing_public_key": keyString
         ]
 
-        return self.executeRequestPublisher(operation: Mutations.initlizeWallet, variables: variables)
+        return self.executeRequestPublisher(operation: Mutations.initlizeWallet, variables: variables, signingKey: privateSigningKey)
     }
 
     /// Initializes a wallet in the Lightspark infrastructure and syncs it to the Bitcoin network. This is an
@@ -103,6 +103,7 @@ extension WalletClient {
     /// - Parameter completion: A closure that will be called when the request is completed.
     public func initializeWallet(
         signingPublicKey: SecKey,
+        privateSigningKey: SecKey,
         completion: @escaping (InitializeWalletOutput?, Error?) -> Void
     ) {
         let keyString: String
@@ -117,7 +118,7 @@ extension WalletClient {
             "signing_public_key": keyString
         ]
 
-        self.executeRequest(operation: Mutations.initlizeWallet, variables: variables, completion: completion)
+        self.executeRequest(operation: Mutations.initlizeWallet, variables: variables, signingKey: privateSigningKey, completion: completion)
     }
 
     /// Initializes a wallet in the Lightspark infrastructure and syncs it to the Bitcoin network. This is an
@@ -127,13 +128,13 @@ extension WalletClient {
     /// - Parameter signingPublicKey: The public key of the wallet. The key is a RSA key.
     ///
     /// - Returns: A `InitializeWalletOutput` object.
-    public func initializeWallet(signingPublicKey: SecKey) async throws -> InitializeWalletOutput {
+    public func initializeWallet(signingPublicKey: SecKey, privateSigningKey: SecKey) async throws -> InitializeWalletOutput {
         let keyString = try Keys.base64StringRepresentationForPublicKey(publicKey: signingPublicKey)
         let variables = [
             "signing_public_key": keyString
         ]
 
-        return try await self.executeRequest(operation: Mutations.initlizeWallet, variables: variables)
+        return try await self.executeRequest(operation: Mutations.initlizeWallet, variables: variables, signingKey: privateSigningKey)
     }
 
     /// Returns the wallet currently logged into the API.

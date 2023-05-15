@@ -15,12 +15,13 @@ extension Keys {
         case tagParsingError
         case generateKeyFailure
         case publicKeyNotCopiableError
+        case keyAlreadyExistError
         case keyNotFoundError
     }
 }
 
 extension Keys {
-    public static func getRSAPrivateKey(tag: String) throws -> SecKey {
+    public static func getRSAPrivateKey(tag: String) -> SecKey? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassKey,
             kSecAttrApplicationTag as String: tag,
@@ -30,9 +31,24 @@ extension Keys {
 
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
-        guard status == errSecSuccess else { throw KeysError.keyNotFoundError }
+        guard status == errSecSuccess else {
+            return nil
+        }
         let key = item as! SecKey
         return key
+    }
+
+    public static func removeRSAPrivateKey(tag: String) throws {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassKey,
+            kSecAttrApplicationTag as String: tag,
+            kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+            kSecReturnRef as String: true,
+        ]
+        let status = SecItemDelete(query as CFDictionary)
+        guard status == errSecSuccess else {
+            throw KeysError.keyNotFoundError
+        }
     }
 
     public static func generateNewRSASigningKeyPair(
@@ -41,7 +57,13 @@ extension Keys {
     ) throws -> (SecKey, SecKey) {
         let attributes: [String: Any];
         if permanent {
-            guard let tag = tag?.data(using: .utf8) else {
+            guard let tag = tag else {
+                throw KeysError.tagParsingError
+            }
+            guard Keys.getRSAPrivateKey(tag: tag) == nil else {
+                throw KeysError.keyAlreadyExistError
+            }
+            guard let tag = tag.data(using: .utf8) else {
                 throw KeysError.tagParsingError
             }
             attributes = [

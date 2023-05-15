@@ -12,7 +12,12 @@ import Foundation
 /// A class for listening to wallet state.
 @available(iOS 14.0, *)
 public class WalletStatusListener: ObservableObject {
-    @Published public var status: WalletStatus? = nil
+    @Published public var status: WalletStatusListenerResult? = nil
+
+    public enum WalletStatusListenerResult {
+        case success(WalletStatus)
+        case fail(Error)
+    }
 
     public init(client: WalletClient) {
         self.client = client
@@ -23,10 +28,10 @@ public class WalletStatusListener: ObservableObject {
         self.publisher
             .sink { completion in
                 if case .failure(let error) = completion {
-                    print(error)
+                    self.status = .fail(error)
                 }
             } receiveValue: { wallet in
-                self.status = wallet.status
+                self.status = .success(wallet.status)
             }
             .store(in: &self.cancellables)
 
@@ -34,10 +39,10 @@ public class WalletStatusListener: ObservableObject {
             .flatMap { _ in self.publisher }
             .sink { completion in
                 if case .failure(let error) = completion {
-                    print(error)
+                    self.status = .fail(error)
                 }
             } receiveValue: { wallet in
-                self.status = wallet.status
+                self.status = .success(wallet.status)
             }
             .store(in: &self.cancellables)
     }

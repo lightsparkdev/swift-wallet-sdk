@@ -6,7 +6,7 @@
 //  Copyright © 2023 Lightspark Group, Inc. All rights reserved.
 //
 
-let version = "1.0.0"
+let version = "1.1.0"
 
 func systemName() -> String{
 #if os(iOS)

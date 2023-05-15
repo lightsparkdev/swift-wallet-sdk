@@ -34,6 +34,7 @@ class WalletViewModel: ObservableObject {
     @Published var numberOfPaymentRequest: Int? = nil
     @Published var numberOfTransactions: Int? = nil
     @Published var feeEstimate: CurrencyAmount? = nil
+    @Published var l1Address: String? = nil
 
     var accountID: String {
         didSet {
@@ -135,6 +136,7 @@ class WalletViewModel: ObservableObject {
                 }
             } receiveValue: { output in
                 self.numberOfTransactions = output.entities.count
+                print(output.entities[0])
             }
             .store(in: &self.cancellables)
     }
@@ -191,7 +193,7 @@ class WalletViewModel: ObservableObject {
         let (privateKey, publicKey) = try! Keys.generateNewRSASigningKeyPair(tag: self.keyTag, permanent: true)
         self.privateKey = privateKey
 
-        walletClient.initializeWalletPublisher(signingPublicKey: publicKey)
+        walletClient.initializeWalletPublisher(signingPublicKey: publicKey, privateSigningKey: privateKey)
             .receive(on: RunLoop.main)
             .sink { completion in
                 if case .failure(let error) = completion {
@@ -209,6 +211,7 @@ class WalletViewModel: ObservableObject {
             return
         }
         self.walletState = nil
+        try! Keys.removeRSAPrivateKey(tag: self.keyTag)
         walletClient.terminateWalletPublisher()
             .receive(on: RunLoop.main)
             .sink { completion in
@@ -256,6 +259,22 @@ class WalletViewModel: ObservableObject {
             .store(in: &self.cancellables)
     }
 
+    func createL1Address() {
+        guard let walletClient = walletClient else {
+            return
+        }
+        walletClient.createBitcoinFundingAddressPublisher()
+            .receive(on: RunLoop.main)
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    print(error)
+                }
+            } receiveValue: { output in
+                self.l1Address = output.bitcoinAddress
+            }
+            .store(in: &self.cancellables)
+    }
+
     func feeEstimate(invoice: String) {
         guard let walletClient = walletClient else {
             return
@@ -276,7 +295,7 @@ class WalletViewModel: ObservableObject {
         let tokenSetup = self.accountID.count > 0 && self.walletToken.count > 0
         self.viewModelState = tokenSetup ? .notLoggedIn : .notSetup
         if tokenSetup {
-            self.privateKey = try? Keys.getRSAPrivateKey(tag: self.keyTag)
+            self.privateKey = Keys.getRSAPrivateKey(tag: self.keyTag)
         }
     }
 
@@ -290,9 +309,11 @@ class WalletViewModel: ObservableObject {
             listener.$status
                 .receive(on: RunLoop.main)
                 .sink { [weak self] status in
-                    self?.walletState = status
-                    if status == .ready {
-                        listener.cancel()
+                    if case .success(let status) = status {
+                        self?.walletState = status
+                        if status == .ready {
+                            listener.cancel()
+                        }
                     }
                 }
                 .store(in: &self.cancellables)

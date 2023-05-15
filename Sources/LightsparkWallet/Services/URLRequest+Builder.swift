@@ -8,7 +8,6 @@
 
 import Foundation
 
-// TODO: Replace this to prod url.
 let defaultBaseURLString = "https://api.lightspark.com/graphql/wallet/2023-05-05"
 
 public enum URLRequestBuilderError: Error {

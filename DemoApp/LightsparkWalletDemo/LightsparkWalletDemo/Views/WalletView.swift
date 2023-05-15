@@ -94,6 +94,11 @@ struct WalletView: View {
                         Text("Fees: \(feeEstimate.originalValue) \(feeEstimate.originalUnit.rawValue)")
                     }
 
+                    if let l1Address = self.viewModel.l1Address {
+                        Text("\(l1Address)")
+                            .textSelection(.enabled)
+                    }
+
                 }
                 Spacer()
                 HStack {
@@ -104,6 +109,11 @@ struct WalletView: View {
 
                     Button("Fetch Payment Requests") {
                         self.viewModel.loadPaymentRequests()
+                    }
+                    .disabled(self.viewModel.walletState != .ready)
+
+                    Button("Create Bitcoin Address") {
+                        self.viewModel.createL1Address()
                     }
                     .disabled(self.viewModel.walletState != .ready)
                 }
