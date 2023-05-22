@@ -49,23 +49,6 @@
             ReferencedContainer = "container:LightsparkWalletDemo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "WALLET_2_JWT"
-            value = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2FwaS5saWdodHNwYXJrLmNvbSIsInN1YiI6IndhbGxldC10ZXN0LXVzZXItMSIsInRlc3QiOnRydWUsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoxNjg1MDczMzYzfQ.UXHzmMwNnsQNSRwa_FJwatjZJ7dbikO9G0hsTnSr9tDa8KD3ysbld90pgVfxJtgVsU6cJpI1w2Do3UO2JDXXSw"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "ACCOUNT_ID"
-            value = "Account:01877165-86b3-9af2-0000-4d52e419085f"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "WALLET_1_JWT"
-            value = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2FwaS5saWdodHNwYXJrLmNvbSIsInN1YiI6IndhbGxldC10ZXN0LXVzZXIiLCJ0ZXN0Ijp0cnVlLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTY4NTA3MzM2M30.57u68WxKTXze6Pdxo9sTv9Aqx076y7gz79LRM2wDPsFRsc8F6clfP5TCsGOA9VUSGpck2eP0X-ILVpT-_0WhHQ"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
