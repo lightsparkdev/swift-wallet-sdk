@@ -21,6 +21,7 @@ public enum EntityEnum {
     case channelClosingTransaction(ChannelClosingTransaction)
     case channelOpeningTransaction(ChannelOpeningTransaction)
     case deposit(Deposit)
+    case graphNode(GraphNode)
     case incomingPayment(IncomingPayment)
     case invoice(Invoice)
     case outgoingPayment(OutgoingPayment)
@@ -48,6 +49,9 @@ extension EntityEnum: Decodable {
         case "Deposit":
             let deposit = try Deposit(from: decoder)
             self = .deposit(deposit)
+        case "GraphNode":
+            let graphNode = try GraphNode(from: decoder)
+            self = .graphNode(graphNode)
         case "IncomingPayment":
             let incomingPayment = try IncomingPayment(from: decoder)
             self = .incomingPayment(incomingPayment)
