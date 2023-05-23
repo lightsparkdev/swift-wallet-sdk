@@ -26,23 +26,26 @@ public class WalletStatusListener: ObservableObject {
     public func start() {
         let timerPublisher = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
         self.publisher
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
-                    self.status = .fail(error)
+                    self?.status = .fail(error)
                 }
-            } receiveValue: { wallet in
-                self.status = .success(wallet.status)
+            } receiveValue: { [weak self] wallet in
+                self?.status = .success(wallet.status)
             }
             .store(in: &self.cancellables)
 
         timerPublisher
             .flatMap { _ in self.publisher }
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
-                    self.status = .fail(error)
+                    self?.status = .fail(error)
                 }
-            } receiveValue: { wallet in
-                self.status = .success(wallet.status)
+            } receiveValue: { [weak self] wallet in
+                self?.status = .success(wallet.status)
+                if wallet.status == .ready {
+                    self?.cancel()
+                }
             }
             .store(in: &self.cancellables)
     }
