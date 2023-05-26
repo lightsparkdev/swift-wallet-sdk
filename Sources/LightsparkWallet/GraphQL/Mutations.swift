@@ -132,4 +132,38 @@ enum Mutations {
 
         \(TerminateWalletOutput.fragment)
         """
+
+    static let createTestModeInvoice = """
+        mutation CreateTestModeInvoice(
+            $amount_msats: Long!
+            $memo: String
+            $invoice_type: InvoiceType
+        ) {
+            create_test_mode_invoice(input: {
+                amount_msats: $amount_msats
+                memo: $memo
+                invoice_type: $invoice_type
+            }) {
+                encoded_payment_request
+            }
+        }
+
+        \(CreateTestModeInvoiceOutput.fragment)
+        """
+
+    static let createTestModePayment = """
+        mutation CreateTestModePayment(
+            $encoded_invoice: String!
+            $amount_msats: Long
+        ) {
+            create_test_mode_payment(input: {
+                encoded_invoice: $encoded_invoice
+                amount_msats: $amount_msats
+            }) {
+                payment {
+                    ...OutgoingPaymentFragment
+                }
+            }
+        }
+        """
 }
