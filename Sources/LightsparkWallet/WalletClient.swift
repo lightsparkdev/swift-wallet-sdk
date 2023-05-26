@@ -984,6 +984,148 @@ extension WalletClient {
     }
 }
 
+
+// Test mode
+extension WalletClient {
+    /// In test mode, generates a Lightning Invoice which can be paid by a local node.
+    /// 
+    /// - Parameter amountMSats: The amount of the invoice in millisatoshis.
+    /// - Parameter memo: A memo to attach to the invoice.
+    /// - Parameter invoiceType: The type of invoice to create.
+    /// 
+    /// - Returns: A publisher that emits a `CreateTestModeInvoiceOutput` object or an error.
+    public func createTestModeInvoicePublisher(
+        amountMSats: Int64,
+        memo: String? = nil,
+        invoiceType: InvoiceType? = nil
+    ) -> AnyPublisher<String, Error> {
+        let variables: [AnyHashable: Any?] = [
+            "amount_msats": amountMSats,
+            "memo": memo,
+            "invoice_type": invoiceType
+        ]
+        return self.executeRequestPublisher(operation: Mutations.createTestModeInvoice, variables: variables)
+    }
+
+    /// In test mode, generates a Lightning Invoice which can be paid by a local node.
+    /// 
+    /// - Parameter amountMSats: The amount of the invoice in millisatoshis.
+    /// - Parameter memo: A memo to attach to the invoice.
+    /// - Parameter invoiceType: The type of invoice to create.
+    /// - Parameter completion: A closure that will be called when the request is completed.
+    public func createTestModeInvoice(
+        amountMSats: Int64,
+        memo: String? = nil,
+        invoiceType: InvoiceType? = nil,
+        completion: @escaping (String?, Error?) -> Void
+    ) {
+        let variables: [AnyHashable: Any?] = [
+            "amount_msats": amountMSats,
+            "memo": memo,
+            "invoice_type": invoiceType
+        ]
+        return self.executeRequest(operation: Mutations.createTestModeInvoice,
+                                   variables: variables,
+                                   completion: completion)
+    }
+
+    /// In test mode, generates a Lightning Invoice which can be paid by a local node.
+    /// 
+    /// - Parameter amountMSats: The amount of the invoice in millisatoshis.
+    /// - Parameter memo: A memo to attach to the invoice.
+    /// - Parameter invoiceType: The type of invoice to create.
+    /// 
+    /// - Returns: A `CreateTestModeInvoiceOutput` object or an error.
+    public func createTestModeInvoice(
+        amountMSats: Int64,
+        memo: String? = nil,
+        invoiceType: InvoiceType? = nil
+    ) async throws -> String {
+        let variables: [AnyHashable: Any?] = [
+            "amount_msats": amountMSats,
+            "memo": memo,
+            "invoice_type": invoiceType
+        ]
+        return try await self.executeRequest(operation: Mutations.createTestModeInvoice, variables: variables)
+    }
+
+    /// In test mode, simulates a payment from other node to an invoice.
+    /// 
+    /// - Parameter encodedPaymentRequest: The encoded payment request to pay.
+    /// - Parameter amountMSats: The amount of the payment in millisatoshis.
+    /// - Parameter signingKey: The private key to sign the request.
+    /// 
+    /// - Returns: A publisher that emits a `CreateTestModePaymentoutput` object or an error.
+    public func createTestModePaymentPublisher(
+        encodedPaymentRequest: String,
+        amountMSats: Int64?,
+        signingKey: SecKey
+    ) -> AnyPublisher<OutgoingPayment, Error> {
+        var variables: [AnyHashable: Any] = [
+            "encoded_invoice": encodedPaymentRequest,
+        ]
+        if let amountMSats = amountMSats {
+            variables["amount_msats"] = amountMSats
+        }
+        return self.executeRequestPublisher(
+            operation: Mutations.createTestModePayment,
+            variables: variables,
+            signingKey: signingKey
+        )
+    }
+
+    /// In test mode, simulates a payment from other node to an invoice.
+    /// 
+    /// - Parameter encodedPaymentRequest: The encoded payment request to pay.
+    /// - Parameter amountMSats: The amount of the payment in millisatoshis.
+    /// - Parameter signingKey: The private key to sign the request.
+    /// - Parameter completion: A closure that will be called when the request is completed.
+    public func createTestModePayment(
+        encodedPaymentRequest: String,
+        amountMSats: Int64?,
+        signingKey: SecKey,
+        completion: @escaping (OutgoingPayment?, Error?) -> Void
+    ) {
+        var variables: [AnyHashable: Any] = [
+            "encoded_invoice": encodedPaymentRequest,
+        ]
+        if let amountMSats = amountMSats {
+            variables["amount_msats"] = amountMSats
+        }
+        return self.executeRequest(
+            operation: Mutations.createTestModePayment,
+            variables: variables,
+            signingKey: signingKey,
+            completion: completion
+        )
+    }
+
+    /// In test mode, simulates a payment from other node to an invoice.
+    /// 
+    /// - Parameter encodedPaymentRequest: The encoded payment request to pay.
+    /// - Parameter amountMSats: The amount of the payment in millisatoshis.
+    /// - Parameter signingKey: The private key to sign the request.
+    /// 
+    /// - Returns: A `CreateTestModePaymentoutput` object or an error.
+    public func createTestModePayment(
+        encodedPaymentRequest: String,
+        amountMSats: Int64?,
+        signingKey: SecKey
+    ) async throws -> OutgoingPayment {
+        var variables: [AnyHashable: Any] = [
+            "encoded_invoice": encodedPaymentRequest,
+        ]
+        if let amountMSats = amountMSats {
+            variables["amount_msats"] = amountMSats
+        }
+        return try await self.executeRequest(
+            operation: Mutations.createTestModePayment,
+            variables: variables,
+            signingKey: signingKey
+        )
+    }
+}
+
 // Execute graphql
 extension WalletClient {
     public func executeRequest<T: Decodable>(
