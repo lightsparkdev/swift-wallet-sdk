@@ -1,5 +1,8 @@
 # Changelog
 
+# v1.2.1
+- Use CSPRNG for nonce generation.
+
 # v1.2.0
 - Add async/await and completion handler functions for JWTAuthManager.
 - Improve WalletStatusListener to automatically stop when the wallet is ready.
