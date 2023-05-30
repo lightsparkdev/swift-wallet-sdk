@@ -12,6 +12,7 @@ let defaultBaseURLString = "https://api.lightspark.com/graphql/wallet/2023-05-05
 
 public enum URLRequestBuilderError: Error {
     case baseURLStringError
+    case nonceGenerationError
 }
 
 extension URLRequest {
@@ -54,7 +55,7 @@ extension URLRequest {
         ]
 
         if signingKey != nil {
-            payloadDictionary["nonce"] = UInt32.random(in: UInt32.min...UInt32.max)
+            payloadDictionary["nonce"] = try getNonce()
             payloadDictionary["expires_at"] = ISO8601DateFormatter().string(from: (Date(timeIntervalSinceNow: 3600)))
         }
 
@@ -71,5 +72,25 @@ extension URLRequest {
 
         urlRequest.httpBody = body
         return urlRequest
+    }
+
+    static private func getNonce() throws -> Int32 {
+        let count = MemoryLayout<Int32>.size
+        var bytes = [Int8](repeating: 0, count: count)
+
+        let status = SecRandomCopyBytes(
+            kSecRandomDefault,
+            count,
+            &bytes
+        )
+
+        guard status == errSecSuccess else {
+            throw URLRequestBuilderError.nonceGenerationError
+        }
+
+        let int = bytes.withUnsafeBytes { pointer in
+            return pointer.load(as: Int32.self)
+        }
+        return int
     }
 }
