@@ -74,8 +74,8 @@ extension URLRequest {
         return urlRequest
     }
 
-    static private func getNonce() throws -> Int32 {
-        let count = MemoryLayout<Int32>.size
+    static private func getNonce() throws -> UInt32 {
+        let count = MemoryLayout<UInt32>.size
         var bytes = [Int8](repeating: 0, count: count)
 
         let status = SecRandomCopyBytes(
@@ -89,7 +89,7 @@ extension URLRequest {
         }
 
         let int = bytes.withUnsafeBytes { pointer in
-            return pointer.load(as: Int32.self)
+            return pointer.load(as: UInt32.self)
         }
         return int
     }
