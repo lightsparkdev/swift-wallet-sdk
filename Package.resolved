@@ -1,0 +1,41 @@
+{
+  "pins" : [
+    {
+      "identity" : "base58swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/keefertaylor/Base58Swift.git",
+      "state" : {
+        "revision" : "1c13ea6b07f1584660526f8bde3d4cc150e91acd",
+        "version" : "2.1.14"
+      }
+    },
+    {
+      "identity" : "bdk-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/bitcoindevkit/bdk-swift",
+      "state" : {
+        "revision" : "eea9701182b656966add1868fa29c366421a6239",
+        "version" : "0.28.0"
+      }
+    },
+    {
+      "identity" : "bigint",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/attaswift/BigInt.git",
+      "state" : {
+        "revision" : "0ed110f7555c34ff468e72e1686e59721f2b0da6",
+        "version" : "5.3.0"
+      }
+    },
+    {
+      "identity" : "secp256k1.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/GigaBitcoin/secp256k1.swift.git",
+      "state" : {
+        "revision" : "1a14e189def5eaa92f839afdd2faad8e43b61a6e",
+        "version" : "0.12.2"
+      }
+    }
+  ],
+  "version" : 2
+}
