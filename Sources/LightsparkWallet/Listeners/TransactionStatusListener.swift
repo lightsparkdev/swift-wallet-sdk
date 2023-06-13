@@ -42,6 +42,12 @@ public class TransactionStatusListener: ObservableObject {
             case "Withdrawal":
                 let publisher: AnyPublisher<Withdrawal, Error> = client.getEntityPublisher(id: id)
                 return publisher.map { $0.status }.eraseToAnyPublisher()
+            case "ChannelOpeningTransaction":
+                let publisher: AnyPublisher<ChannelOpeningTransaction, Error> = client.getEntityPublisher(id: id)
+                return publisher.map { $0.status }.eraseToAnyPublisher()
+            case "ChannelClosingTransaction":
+                let publisher: AnyPublisher<ChannelClosingTransaction, Error> = client.getEntityPublisher(id: id)
+                return publisher.map { $0.status }.eraseToAnyPublisher()
             default:
                 throw TransactionStatusListener.TransactionStatusListenerError.typeNotSupported
             }
