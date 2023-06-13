@@ -778,7 +778,7 @@ extension WalletClient {
 
     private func entityQuery(_ t: Entity.Type) -> String {
         """
-        query getEntity($id: String!) {
+        query getEntity($id: ID!) {
             entity(id: $id) {
                 ...\(String(describing: t))Fragment
             }
