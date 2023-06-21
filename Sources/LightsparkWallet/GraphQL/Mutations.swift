@@ -163,5 +163,7 @@ enum Mutations {
                 }
             }
         }
+
+        \(OutgoingPayment.fragment)
         """
 }
