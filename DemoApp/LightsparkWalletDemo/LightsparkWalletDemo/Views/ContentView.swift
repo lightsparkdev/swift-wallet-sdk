@@ -40,6 +40,12 @@ struct ContentView: View {
             .tabItem {
                 Label("Wallet 2", systemImage: "case")
             }
+
+            SubscriptionView()
+                .tabItem {
+                    Label("Subscription", systemImage: "case")
+                }
+            
         }
     }
 }

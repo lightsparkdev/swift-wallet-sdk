@@ -15,6 +15,8 @@
 		F7671E9C2A01DC1F00545775 /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7671E9B2A01DC1F00545775 /* WalletView.swift */; };
 		F7671EA02A01E2F400545775 /* WalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7671E9F2A01E2F400545775 /* WalletViewModel.swift */; };
 		F7D904522A042694002F5993 /* LightsparkWallet in Frameworks */ = {isa = PBXBuildFile; productRef = F7D904512A042694002F5993 /* LightsparkWallet */; };
+		F7EF403E2A463CB20056B2CB /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EF403D2A463CB20056B2CB /* SubscriptionView.swift */; };
+		F7EF40402A463CCD0056B2CB /* SubscriptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EF403F2A463CCD0056B2CB /* SubscriptionViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +29,8 @@
 		F7671E9B2A01DC1F00545775 /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
 		F7671E9F2A01E2F400545775 /* WalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletViewModel.swift; sourceTree = "<group>"; };
 		F7671EA32A04263F00545775 /* lightspark-wallet-swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "lightspark-wallet-swift"; path = ../..; sourceTree = "<group>"; };
+		F7EF403D2A463CB20056B2CB /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
+		F7EF403F2A463CCD0056B2CB /* SubscriptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +71,7 @@
 				F730AD3129F354E800B504B3 /* Assets.xcassets */,
 				F730AD3329F354E800B504B3 /* Preview Content */,
 				F7671E9F2A01E2F400545775 /* WalletViewModel.swift */,
+				F7EF403F2A463CCD0056B2CB /* SubscriptionViewModel.swift */,
 			);
 			path = LightsparkWalletDemo;
 			sourceTree = "<group>";
@@ -100,6 +105,7 @@
 				F730AD2F29F354E800B504B3 /* ContentView.swift */,
 				F7671E992A01D7DE00545775 /* WalletSetupView.swift */,
 				F7671E9B2A01DC1F00545775 /* WalletView.swift */,
+				F7EF403D2A463CB20056B2CB /* SubscriptionView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -178,11 +184,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7EF40402A463CCD0056B2CB /* SubscriptionViewModel.swift in Sources */,
 				F730AD3029F354E800B504B3 /* ContentView.swift in Sources */,
 				F7671E9C2A01DC1F00545775 /* WalletView.swift in Sources */,
 				F7671E9A2A01D7DE00545775 /* WalletSetupView.swift in Sources */,
 				F7671EA02A01E2F400545775 /* WalletViewModel.swift in Sources */,
 				F730AD2E29F354E800B504B3 /* LightsparkWalletDemoApp.swift in Sources */,
+				F7EF403E2A463CB20056B2CB /* SubscriptionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
