@@ -51,4 +51,8 @@ extension WebsocketMessage {
     static func pingMessage(payload: String?) -> WebsocketMessage {
         return WebsocketMessage(type: .Ping, payload: payload)
     }
+
+    static func pongMessage(payload: String?) -> WebsocketMessage {
+        return WebsocketMessage(type: .Pong, payload: payload)
+    }
 }
