@@ -1,6 +1,6 @@
 //
 //  WebSocketMessage.swift
-//  
+//  LightsparkWallet
 //
 //  Created by Zhen Lu on 6/20/23.
 //  Copyright © 2023 Lightspark Group, Inc. All rights reserved.
