@@ -55,4 +55,8 @@ extension WebsocketMessage {
     static func pongMessage(payload: String?) -> WebsocketMessage {
         return WebsocketMessage(type: .Pong, payload: payload)
     }
+
+    static func completeMessage(id: String) -> WebsocketMessage {
+        return WebsocketMessage(type: .Complete, id: id)
+    }
 }

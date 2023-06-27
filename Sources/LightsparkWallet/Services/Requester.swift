@@ -97,6 +97,10 @@ public final class Requester {
             .eraseToAnyPublisher()
     }
 
+    public func createWebsocketTask() -> URLSessionWebSocketTask {
+        return self.urlSession.webSocketTask(with: URLRequest.websocketRequest())
+    }
+
     static var userAgentString: String {
         "lightspark-swift-wallet-sdk/\(version) \(systemName())/\(ProcessInfo.processInfo.operatingSystemVersionString)"
     }

@@ -12,17 +12,18 @@ import Foundation
 
 protocol GraphQLWebsocketProtocolDelegate: AnyObject {
     func graphQLWebsocketProtocol(protocol: GraphQLWebsocketProtocol, didReceiveMessage: WebsocketMessage)
-    func graphQLWebsocketProtocol(protocol: GraphQLWebsocketProtocol, onError: Error)
+    func graphQLWebsocketProtocol(protocol: GraphQLWebsocketProtocol, operationError: String)
+    func graphQLWebsocketProtocol(protocol: GraphQLWebsocketProtocol, error: Error)
     func graphQLWebsocketProtocol(protocol: GraphQLWebsocketProtocol, operationComplete: String)
     // TODO: Add on close
 }
 
 class GraphQLWebsocketProtocol {
-    init(websocketTask: URLSessionWebSocketTask, delegate: GraphQLWebsocketProtocolDelegate?) {
+    init(websocketTask: URLSessionWebSocketTask) {
         self.websocketTask = websocketTask
-        self.delegate = delegate
         self.messageQueue = MessageQueuePublisher()
         self.websocketTask.resume()
+        self.receive()
     }
 
     func connectionInit(payload: String? = nil) {
@@ -34,6 +35,11 @@ class GraphQLWebsocketProtocol {
         let uuid = UUID().uuidString
         // TODO: send the query
         return uuid
+    }
+
+    func complete(id: String) {
+        let message = WebsocketMessage.completeMessage(id: id)
+        self.send(message: message)
     }
 
     func ping(payload: String? = nil) {
@@ -56,7 +62,7 @@ class GraphQLWebsocketProtocol {
                     // Resume receving the next message.
                     strongSelf.receive()
                 case .failure(let error):
-                    strongSelf.delegate?.graphQLWebsocketProtocol(protocol: strongSelf, onError: error)
+                    strongSelf.delegate?.graphQLWebsocketProtocol(protocol: strongSelf, error: error)
                 }
             }
         }
@@ -94,10 +100,24 @@ class GraphQLWebsocketProtocol {
             self.connectionAckReceived()
             break
 
-        case .Next, .Complete, .Error:
+        case .Next:
             // Move the message to the delegate to handle.
             self.delegate?.graphQLWebsocketProtocol(protocol: self, didReceiveMessage: websocketMessage)
             break
+
+        case .Complete:
+            guard let id = websocketMessage.id else {
+                print("ID is empty for Complete message.")
+                break
+            }
+            self.delegate?.graphQLWebsocketProtocol(protocol: self, operationComplete: id)
+
+        case .Error:
+            guard let error = websocketMessage.payload else {
+                print("Payload is empty for Error message.")
+                break
+            }
+            self.delegate?.graphQLWebsocketProtocol(protocol: self, operationError: error)
 
         case .Ping:
             self.pong()
@@ -134,11 +154,11 @@ class GraphQLWebsocketProtocol {
             let messageToSend = URLSessionWebSocketTask.Message.string(try message.toJSONString())
             websocketTask.send(messageToSend) { [weak self] error in
                 if let error = error, let strongSelf = self {
-                    strongSelf.delegate?.graphQLWebsocketProtocol(protocol: strongSelf, onError: error)
+                    strongSelf.delegate?.graphQLWebsocketProtocol(protocol: strongSelf, error: error)
                 }
             }
         } catch {
-            self.delegate?.graphQLWebsocketProtocol(protocol: self, onError: error)
+            self.delegate?.graphQLWebsocketProtocol(protocol: self, error: error)
         }
     }
 
