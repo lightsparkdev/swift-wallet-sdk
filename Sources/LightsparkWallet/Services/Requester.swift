@@ -97,8 +97,12 @@ public final class Requester {
             .eraseToAnyPublisher()
     }
 
-    public func createWebsocketTask() -> URLSessionWebSocketTask {
-        return self.urlSession.webSocketTask(with: URLRequest.websocketRequest())
+    public func subscribePublisher(
+        operation: String,
+        variables: [AnyHashable: Any?] = [:]
+    ) -> AnyPublisher<Data, Error> {
+        let operation = Operation(operation: operation, variables: variables)
+        return self.subscriptionManager.executeGraphqlOperationPublisher(operation: operation)
     }
 
     static var userAgentString: String {
@@ -107,4 +111,15 @@ public final class Requester {
 
     private let urlSession: URLSession
     private let baseURLString: String?
+    private lazy var subscriptionManager: SubscriptionManager = {
+        let subscriptionManager = SubscriptionManager()
+        subscriptionManager.delegate = self
+        return subscriptionManager
+    }()
+}
+
+extension Requester: SubscriptionManagerDelegate {
+    func subscriptionManagerRequestWebSocketTask(subscrptionManager: SubscriptionManager) throws -> URLSessionWebSocketTask {
+        return self.urlSession.webSocketTask(with: try URLRequest.webSocketRequest())
+    }
 }

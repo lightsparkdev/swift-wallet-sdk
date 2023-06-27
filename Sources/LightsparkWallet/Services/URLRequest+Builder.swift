@@ -74,10 +74,10 @@ extension URLRequest {
         return urlRequest
     }
 
-    static func websocketRequest() -> URLRequest {
+    static func webSocketRequest() throws -> URLRequest {
         let urlString = defaultBaseURLString.replacingOccurrences(of: "https", with: "wss")
         guard let baseURL = URL(string: urlString) else {
-            fatalError()
+            throw URLRequestBuilderError.baseURLStringError
         }
 
         var request = URLRequest(url: baseURL)

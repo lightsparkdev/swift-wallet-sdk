@@ -1,5 +1,5 @@
 //
-//  WebsocketMessage.swift
+//  WebSocketMessage.swift
 //  
 //
 //  Created by Zhen Lu on 6/20/23.
@@ -9,7 +9,7 @@
 
 import Foundation
 
-enum WebsocketMessageType: String, Codable {
+enum WebSocketMessageType: String, Codable {
     // Client -> Server
     case ConnectionInit = "connection_init"
     case Subscribe = "subscribe"
@@ -25,11 +25,11 @@ enum WebsocketMessageType: String, Codable {
     case Pong = "pong"
 }
 
-struct WebsocketMessage : Codable {
+struct WebSocketMessage : Codable {
     enum WebSocketMessageError: Error {
         case stringConversionError
     }
-    var type: WebsocketMessageType
+    var type: WebSocketMessageType
     var id: String?
     var payload: String?
 
@@ -43,20 +43,20 @@ struct WebsocketMessage : Codable {
     }
 }
 
-extension WebsocketMessage {
-    static func connectionInitMessage(payload: String?) -> WebsocketMessage {
-        return WebsocketMessage(type: .ConnectionInit, payload: payload)
+extension WebSocketMessage {
+    static func connectionInitMessage(payload: String?) -> WebSocketMessage {
+        return WebSocketMessage(type: .ConnectionInit, payload: payload)
     }
 
-    static func pingMessage(payload: String?) -> WebsocketMessage {
-        return WebsocketMessage(type: .Ping, payload: payload)
+    static func pingMessage(payload: String?) -> WebSocketMessage {
+        return WebSocketMessage(type: .Ping, payload: payload)
     }
 
-    static func pongMessage(payload: String?) -> WebsocketMessage {
-        return WebsocketMessage(type: .Pong, payload: payload)
+    static func pongMessage(payload: String?) -> WebSocketMessage {
+        return WebSocketMessage(type: .Pong, payload: payload)
     }
 
-    static func completeMessage(id: String) -> WebsocketMessage {
-        return WebsocketMessage(type: .Complete, id: id)
+    static func completeMessage(id: String) -> WebSocketMessage {
+        return WebSocketMessage(type: .Complete, id: id)
     }
 }
