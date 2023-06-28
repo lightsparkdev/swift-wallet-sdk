@@ -12,7 +12,6 @@ import Foundation
 
 protocol GraphQLWebSocketProtocolDelegate: AnyObject {
     func graphQLWebSocketProtocol(protocol: GraphQLWebSocketProtocol, didReceiveMessage: WebSocketMessage)
-    func graphQLWebSocketProtocol(protocol: GraphQLWebSocketProtocol, id: String, operationError: String)
     func graphQLWebSocketProtocol(protocol: GraphQLWebSocketProtocol, error: Error)
     func graphQLWebSocketProtocol(protocol: GraphQLWebSocketProtocol, operationComplete: String)
     // TODO: Add on close
@@ -101,7 +100,7 @@ class GraphQLWebSocketProtocol {
             self.connectionAckReceived()
             break
 
-        case .Next:
+        case .Next, .Error:
             // Move the message to the delegate to handle.
             self.delegate?.graphQLWebSocketProtocol(protocol: self, didReceiveMessage: webSocketMessage)
             break
@@ -112,15 +111,6 @@ class GraphQLWebSocketProtocol {
                 break
             }
             self.delegate?.graphQLWebSocketProtocol(protocol: self, operationComplete: id)
-
-        case .Error:
-//            guard let id = webSocketMessage.id,
-//                  let error = webSocketMessage.payload else {
-//                print("Payload is empty for Error message.")
-//                break
-//            }
-//            self.delegate?.graphQLWebSocketProtocol(protocol: self, id: id, operationError: error)
-            break
 
         case .Ping:
             self.pong()

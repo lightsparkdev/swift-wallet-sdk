@@ -12,7 +12,7 @@ import Foundation
 
 public enum SubscriptionError: Error {
     case protocolCreationError
-    case operationError(String)
+    case operationError
 }
 
 protocol SubscriptionManagerDelegate: AnyObject {
@@ -24,6 +24,8 @@ class SubscriptionManager {
         if let webSocketProtocol = self.webSocketProtocol {
             webSocketProtocol.close()
             self.webSocketProtocol = nil
+            self.idleTimer?.invalidate()
+            self.idleTimer = nil
         }
     }
 
@@ -58,14 +60,27 @@ class SubscriptionManager {
     }
 
     weak var delegate: SubscriptionManagerDelegate?
-    private var subscriptions = [String : (Operation, PassthroughSubject<Data, Error>)]()
+    private var subscriptions = [String : (Operation, PassthroughSubject<Data, Error>)]() {
+        didSet {
+            if subscriptions.isEmpty {
+                idleTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: false, block: { _ in
+                    self.closeProtocol()
+                })
+            } else {
+                idleTimer?.invalidate()
+                idleTimer = nil
+            }
+        }
+    }
     private var webSocketProtocol: GraphQLWebSocketProtocol? = nil
-    private let queue = DispatchQueue(label: "subscription manager queue")
+    private var idleTimer: Timer?
 }
 
 extension SubscriptionManager: GraphQLWebSocketProtocolDelegate {
     func graphQLWebSocketProtocol(protocol: GraphQLWebSocketProtocol, didReceiveMessage message: WebSocketMessage) {
-        guard let id = message.id, message.type == .Next, let payload = message.payload else {
+        guard let id = message.id,
+                message.type == .Next || message.type == .Error,
+                let payload = message.payload else {
             print("Wrong message type routed to the subscription manager or message is not complete.")
             return
         }
@@ -80,16 +95,17 @@ extension SubscriptionManager: GraphQLWebSocketProtocolDelegate {
             return
         }
 
-        subject.send(data)
-    }
+        if message.type == .Error {
+            if let graphqlError = try? JSONDecoder().decode(GraphQLError.self, from: data) {
+                subject.send(completion: .failure(graphqlError))
+            } else {
+                subject.send(completion: .failure(SubscriptionError.operationError))
+            }
 
-    func graphQLWebSocketProtocol(protocol: GraphQLWebSocketProtocol, id: String, operationError: String) {
-        // An operation error, emit the error to the user.
-        guard let (_, subject) = subscriptions[id] else {
-            return
+            subscriptions.removeValue(forKey: id)
+        } else {
+            subject.send(data)
         }
-
-        subject.send(completion: .failure(SubscriptionError.operationError(operationError)))
     }
 
     func graphQLWebSocketProtocol(protocol: GraphQLWebSocketProtocol, error: Error) {
