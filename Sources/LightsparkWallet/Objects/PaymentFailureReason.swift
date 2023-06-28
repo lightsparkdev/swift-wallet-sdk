@@ -21,4 +21,6 @@ public enum PaymentFailureReason: String, Decodable {
     case selfPayment = "SELF_PAYMENT"
 
     case invoiceExpired = "INVOICE_EXPIRED"
+
+    case riskScreeningFailed = "RISK_SCREENING_FAILED"
 }
