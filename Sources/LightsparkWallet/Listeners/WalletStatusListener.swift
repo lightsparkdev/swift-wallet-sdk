@@ -24,7 +24,6 @@ public class WalletStatusListener: ObservableObject {
     }
 
     public func start() {
-        let timerPublisher = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
         self.publisher
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
@@ -32,20 +31,6 @@ public class WalletStatusListener: ObservableObject {
                 }
             } receiveValue: { [weak self] wallet in
                 self?.status = .success(wallet.status)
-            }
-            .store(in: &self.cancellables)
-
-        timerPublisher
-            .flatMap { _ in self.publisher }
-            .sink { [weak self] completion in
-                if case .failure(let error) = completion {
-                    self?.status = .fail(error)
-                }
-            } receiveValue: { [weak self] wallet in
-                self?.status = .success(wallet.status)
-                if wallet.status == .ready {
-                    self?.cancel()
-                }
             }
             .store(in: &self.cancellables)
     }
@@ -59,5 +44,5 @@ public class WalletStatusListener: ObservableObject {
     private var client: WalletClient
     private var cancellables = Set<AnyCancellable>()
 
-    lazy var publisher: AnyPublisher<Wallet, Error> = client.getCurrentWalletPublisher()
+    lazy var publisher: AnyPublisher<Wallet, Error> = client.currentWalletSubscriptionPublisher()
 }

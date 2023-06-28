@@ -31,9 +31,10 @@ class GraphQLWebSocketProtocol {
         self.reallySend(message: message)
     }
 
-    func subscribe() -> String {
+    func subscribe(operation: Operation) -> String {
         let uuid = UUID().uuidString
-        // TODO: send the query
+        let message = WebSocketMessage.subscribeMessage(id: uuid, operation: operation)
+        self.send(message: message)
         return uuid
     }
 
@@ -55,6 +56,7 @@ class GraphQLWebSocketProtocol {
     func receive() {
         self.webSocketTask.receive { [weak self] result in
             if let strongSelf = self {
+                print("WebSocket: Receive \(result)")
                 switch result {
                 case .success(let message):
                     strongSelf.handleServerMessages(message: message)
@@ -85,12 +87,11 @@ class GraphQLWebSocketProtocol {
             return
         }
 
-        let jsonDecoder = JSONDecoder()
         let webSocketMessage: WebSocketMessage
         do {
-            webSocketMessage = try jsonDecoder.decode(WebSocketMessage.self, from: jsonData)
+            webSocketMessage = try WebSocketMessage.fromJSON(jsonData: jsonData)
         } catch {
-            print("json decoder error")
+            print(error)
             return
         }
 
@@ -113,12 +114,13 @@ class GraphQLWebSocketProtocol {
             self.delegate?.graphQLWebSocketProtocol(protocol: self, operationComplete: id)
 
         case .Error:
-            guard let id = webSocketMessage.id,
-                  let error = webSocketMessage.payload else {
-                print("Payload is empty for Error message.")
-                break
-            }
-            self.delegate?.graphQLWebSocketProtocol(protocol: self, id: id, operationError: error)
+//            guard let id = webSocketMessage.id,
+//                  let error = webSocketMessage.payload else {
+//                print("Payload is empty for Error message.")
+//                break
+//            }
+//            self.delegate?.graphQLWebSocketProtocol(protocol: self, id: id, operationError: error)
+            break
 
         case .Ping:
             self.pong()
@@ -152,7 +154,11 @@ class GraphQLWebSocketProtocol {
 
     private func reallySend(message: WebSocketMessage) {
         do {
-            let messageToSend = URLSessionWebSocketTask.Message.string(try message.toJSONString())
+            let jsonString = try message.toJSONString()
+            let messageToSend = URLSessionWebSocketTask.Message.string(jsonString)
+            #if DEBUG
+            print("WebSocket: Send \(jsonString)")
+            #endif
             webSocketTask.send(messageToSend) { [weak self] error in
                 if let error = error, let strongSelf = self {
                     strongSelf.delegate?.graphQLWebSocketProtocol(protocol: strongSelf, error: error)

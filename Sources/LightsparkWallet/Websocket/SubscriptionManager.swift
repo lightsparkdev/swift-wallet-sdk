@@ -37,7 +37,7 @@ class SubscriptionManager {
         guard let webSocketProtocol = self.webSocketProtocol else {
             return Fail(error: SubscriptionError.protocolCreationError).eraseToAnyPublisher()
         }
-        let id = webSocketProtocol.subscribe()
+        let id = webSocketProtocol.subscribe(operation: operation)
         self.subscriptions[id] = (operation, subject)
         return subject.eraseToAnyPublisher()
     }
@@ -75,7 +75,7 @@ extension SubscriptionManager: GraphQLWebSocketProtocolDelegate {
             return
         }
 
-        guard let data = payload.data(using: .utf8) else {
+        guard let data = try? JSONSerialization.data(withJSONObject: payload) else {
             print("parsing error")
             return
         }

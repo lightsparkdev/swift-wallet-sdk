@@ -25,38 +25,72 @@ enum WebSocketMessageType: String, Codable {
     case Pong = "pong"
 }
 
-struct WebSocketMessage : Codable {
-    enum WebSocketMessageError: Error {
-        case stringConversionError
-    }
+public enum WebSocketMessageError: Error {
+    case stringParsingError
+    case jsonDataParsingError
+    case missingMessageTypeError
+}
+
+struct WebSocketMessage {
     var type: WebSocketMessageType
     var id: String?
-    var payload: String?
-
-    func toJSONString() throws -> String {
-        let jsonEncoder = JSONEncoder()
-        let jsonData = try jsonEncoder.encode(self)
-        guard let string = String(data: jsonData, encoding: .utf8) else {
-            throw WebSocketMessageError.stringConversionError
-        }
-        return string
-    }
+    var payload: Any?
 }
 
 extension WebSocketMessage {
-    static func connectionInitMessage(payload: String?) -> WebSocketMessage {
+    func toJSONString() throws -> String {
+        var jsonDictionary : [String: Any] = [
+            "type": type.rawValue
+        ]
+
+        if let id = id {
+            jsonDictionary["id"] = id
+        }
+
+        if let payload = payload {
+            jsonDictionary["payload"] = payload
+        }
+
+        let jsonData = try JSONSerialization.data(withJSONObject: jsonDictionary)
+        guard let jsonString = String(data: jsonData, encoding: .utf8) else {
+            throw WebSocketMessageError.stringParsingError
+        }
+        return jsonString
+    }
+
+    static func fromJSON(jsonData: Data) throws -> Self {
+        guard let json = try JSONSerialization.jsonObject(with: jsonData) as? [String: Any] else {
+            throw WebSocketMessageError.jsonDataParsingError
+        }
+
+        guard let typeString = json["type"] as? String,
+              let type = WebSocketMessageType(rawValue: typeString) else {
+            throw WebSocketMessageError.missingMessageTypeError
+        }
+
+        return WebSocketMessage(type: type, id: json["id"] as? String, payload: json["payload"])
+    }
+}
+
+// Factory methods
+extension WebSocketMessage {
+    static func connectionInitMessage(payload: Any?) -> WebSocketMessage {
         return WebSocketMessage(type: .ConnectionInit, payload: payload)
     }
 
-    static func pingMessage(payload: String?) -> WebSocketMessage {
+    static func pingMessage(payload: Any?) -> WebSocketMessage {
         return WebSocketMessage(type: .Ping, payload: payload)
     }
 
-    static func pongMessage(payload: String?) -> WebSocketMessage {
+    static func pongMessage(payload: Any?) -> WebSocketMessage {
         return WebSocketMessage(type: .Pong, payload: payload)
     }
 
     static func completeMessage(id: String) -> WebSocketMessage {
         return WebSocketMessage(type: .Complete, id: id)
+    }
+
+    static func subscribeMessage(id: String, operation: Operation) -> WebSocketMessage {
+        return WebSocketMessage(type: .Subscribe, id: id, payload: operation.payloadDictionary())
     }
 }

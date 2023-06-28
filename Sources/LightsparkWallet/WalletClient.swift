@@ -1126,6 +1126,13 @@ extension WalletClient {
     }
 }
 
+// Subscription
+extension WalletClient {
+    public func currentWalletSubscriptionPublisher() -> AnyPublisher<Wallet, Error> {
+        return self.subscriptionPublisher(operation: Subscriptions.currentWalletSubscription)
+    }
+}
+
 // Execute graphql
 extension WalletClient {
     public func executeRequest<T: Decodable>(
@@ -1204,5 +1211,24 @@ extension WalletClient {
             }
         }
         .eraseToAnyPublisher()
+    }
+
+    public func subscriptionPublisher<T: Decodable>(
+        operation: String,
+        variables: [AnyHashable: Any?] = [:]
+    ) -> AnyPublisher<T, Error> {
+        return self.requester.subscribePublisher(operation: operation, variables: variables)
+            .tryMap { data in
+                let response = try JSONDecoder.lightsparkJSONDecoder().decode(Response<T>.self, from: data)
+                if let data = response.data {
+                    return data
+                } else {
+                    if let error = response.errors?.first {
+                        throw error
+                    }
+                    throw WalletClientError.emptyDataError
+                }
+            }
+            .eraseToAnyPublisher()
     }
 }
