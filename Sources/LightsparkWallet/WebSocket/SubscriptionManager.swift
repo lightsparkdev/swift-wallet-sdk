@@ -81,7 +81,6 @@ extension SubscriptionManager: GraphQLWebSocketProtocolDelegate {
         guard let id = message.id,
                 message.type == .Next || message.type == .Error,
                 let payload = message.payload else {
-            print("Wrong message type routed to the subscription manager or message is not complete.")
             return
         }
 
@@ -91,7 +90,6 @@ extension SubscriptionManager: GraphQLWebSocketProtocolDelegate {
         }
 
         guard let data = try? JSONSerialization.data(withJSONObject: payload) else {
-            print("parsing error")
             return
         }
 

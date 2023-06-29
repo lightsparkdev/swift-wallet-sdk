@@ -55,7 +55,9 @@ class GraphQLWebSocketProtocol {
     func receive() {
         self.webSocketTask.receive { [weak self] result in
             if let strongSelf = self {
+#if DEBUG
                 print("WebSocket: Receive \(result)")
+#endif
                 switch result {
                 case .success(let message):
                     strongSelf.handleServerMessages(message: message)
@@ -77,20 +79,14 @@ class GraphQLWebSocketProtocol {
         case .data(let dataValue):
             jsonData = dataValue
         @unknown default:
-            print("message contains unknown type")
             return
         }
 
         guard let jsonData = jsonData else {
-            print("jsonData empty")
             return
         }
 
-        let webSocketMessage: WebSocketMessage
-        do {
-            webSocketMessage = try WebSocketMessage.fromJSON(jsonData: jsonData)
-        } catch {
-            print(error)
+        guard let webSocketMessage: WebSocketMessage = try? WebSocketMessage.fromJSON(jsonData: jsonData) else {
             return
         }
 
@@ -107,7 +103,6 @@ class GraphQLWebSocketProtocol {
 
         case .Complete:
             guard let id = webSocketMessage.id else {
-                print("ID is empty for Complete message.")
                 break
             }
             self.delegate?.graphQLWebSocketProtocol(protocol: self, operationComplete: id)
@@ -146,9 +141,9 @@ class GraphQLWebSocketProtocol {
         do {
             let jsonString = try message.toJSONString()
             let messageToSend = URLSessionWebSocketTask.Message.string(jsonString)
-            #if DEBUG
+#if DEBUG
             print("WebSocket: Send \(jsonString)")
-            #endif
+#endif
             webSocketTask.send(messageToSend) { [weak self] error in
                 if let error = error, let strongSelf = self {
                     strongSelf.delegate?.graphQLWebSocketProtocol(protocol: strongSelf, error: error)
