@@ -151,6 +151,7 @@ class GraphQLWebSocketProtocol {
         .store(in: &self.subscribers)
         self.ackTimer?.invalidate()
         self.ackTimer = nil
+        self.delegate?.graphQLWebSocketProtocolDidConnected(protocol: self)
     }
 
     private func reallySend(message: WebSocketMessage) {
