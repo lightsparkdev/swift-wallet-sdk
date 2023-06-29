@@ -13,6 +13,7 @@ import Foundation
 public enum SubscriptionError: Error {
     case protocolCreationError
     case operationError
+    case networkError
 }
 
 protocol SubscriptionManagerDelegate: AnyObject {
@@ -27,6 +28,9 @@ class SubscriptionManager {
                 self.webSocketProtocol = nil
                 self.idleTimer?.invalidate()
                 self.idleTimer = nil
+            }
+            if !self.retryConnectionIfNeeded() {
+                self.closeAllSubscriptions()
             }
         }
     }
@@ -63,8 +67,14 @@ class SubscriptionManager {
         self.webSocketProtocol = webSocketProtocol
     }
 
-    private func retryConnectionIfNeeded() {
+    private func retryConnectionIfNeeded() -> Bool {
+        return false
+    }
 
+    private func closeAllSubscriptions() {
+        self.subscriptions.values.forEach { (operation, subject) in
+            subject.send(completion: .failure(SubscriptionError.networkError))
+        }
     }
 
     weak var delegate: SubscriptionManagerDelegate?
@@ -120,9 +130,7 @@ extension SubscriptionManager: GraphQLWebSocketProtocolDelegate {
     }
 
     func graphQLWebSocketProtocol(protocol: GraphQLWebSocketProtocol, error: Error) {
-        // An error occurs, close the protocol
         self.closeProtocol()
-        self.retryConnectionIfNeeded()
     }
 
     func graphQLWebSocketProtocol(protocol: GraphQLWebSocketProtocol, operationComplete id: String) {
