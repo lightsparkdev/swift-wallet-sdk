@@ -21,27 +21,31 @@ protocol SubscriptionManagerDelegate: AnyObject {
 
 class SubscriptionManager {
     func closeProtocol() {
-        if let webSocketProtocol = self.webSocketProtocol {
-            webSocketProtocol.close()
-            self.webSocketProtocol = nil
-            self.idleTimer?.invalidate()
-            self.idleTimer = nil
+        self.workQueue.async {
+            if let webSocketProtocol = self.webSocketProtocol {
+                webSocketProtocol.close()
+                self.webSocketProtocol = nil
+                self.idleTimer?.invalidate()
+                self.idleTimer = nil
+            }
         }
     }
 
     func executeGraphqlOperationPublisher(operation: Operation) -> AnyPublisher<Data, Error> {
-        let subject = PassthroughSubject<Data, Error>()
-        do {
-            try self.createWebSocketProtocolIfNeeded()
-        } catch {
-            return Fail(error: error).eraseToAnyPublisher()
+        self.workQueue.sync {
+            let subject = PassthroughSubject<Data, Error>()
+            do {
+                try self.createWebSocketProtocolIfNeeded()
+            } catch {
+                return Fail(error: error).eraseToAnyPublisher()
+            }
+            guard let webSocketProtocol = self.webSocketProtocol else {
+                return Fail(error: SubscriptionError.protocolCreationError).eraseToAnyPublisher()
+            }
+            let id = webSocketProtocol.subscribe(operation: operation)
+            self.subscriptions[id] = (operation, subject)
+            return subject.eraseToAnyPublisher()
         }
-        guard let webSocketProtocol = self.webSocketProtocol else {
-            return Fail(error: SubscriptionError.protocolCreationError).eraseToAnyPublisher()
-        }
-        let id = webSocketProtocol.subscribe(operation: operation)
-        self.subscriptions[id] = (operation, subject)
-        return subject.eraseToAnyPublisher()
     }
 
     private func createWebSocketProtocolIfNeeded() throws {
@@ -74,35 +78,38 @@ class SubscriptionManager {
     }
     private var webSocketProtocol: GraphQLWebSocketProtocol? = nil
     private var idleTimer: Timer?
+    private let workQueue = DispatchQueue(label: "com.lightspark.subscriptionManagerQueue")
 }
 
 extension SubscriptionManager: GraphQLWebSocketProtocolDelegate {
     func graphQLWebSocketProtocol(protocol: GraphQLWebSocketProtocol, didReceiveMessage message: WebSocketMessage) {
-        guard let id = message.id,
-                message.type == .Next || message.type == .Error,
-                let payload = message.payload else {
-            return
-        }
-
-        guard let (_, subject) = subscriptions[id] else {
-            // This should never happen, but in case this happens, try send a close message to the server.
-            return
-        }
-
-        guard let data = try? JSONSerialization.data(withJSONObject: payload) else {
-            return
-        }
-
-        if message.type == .Error {
-            if let graphqlError = try? JSONDecoder().decode(GraphQLError.self, from: data) {
-                subject.send(completion: .failure(graphqlError))
-            } else {
-                subject.send(completion: .failure(SubscriptionError.operationError))
+        self.workQueue.async {
+            guard let id = message.id,
+                  message.type == .Next || message.type == .Error,
+                  let payload = message.payload else {
+                return
             }
 
-            subscriptions.removeValue(forKey: id)
-        } else {
-            subject.send(data)
+            guard let (_, subject) = self.subscriptions[id] else {
+                // This should never happen, but in case this happens, try send a close message to the server.
+                return
+            }
+
+            guard let data = try? JSONSerialization.data(withJSONObject: payload) else {
+                return
+            }
+
+            if message.type == .Error {
+                if let graphqlError = try? JSONDecoder().decode(GraphQLError.self, from: data) {
+                    subject.send(completion: .failure(graphqlError))
+                } else {
+                    subject.send(completion: .failure(SubscriptionError.operationError))
+                }
+
+                self.subscriptions.removeValue(forKey: id)
+            } else {
+                subject.send(data)
+            }
         }
     }
 
@@ -113,11 +120,13 @@ extension SubscriptionManager: GraphQLWebSocketProtocolDelegate {
     }
 
     func graphQLWebSocketProtocol(protocol: GraphQLWebSocketProtocol, operationComplete id: String) {
-        guard let (_, subject) = subscriptions[id] else {
-            return
-        }
+        self.workQueue.async {
+            guard let (_, subject) = self.subscriptions[id] else {
+                return
+            }
 
-        subject.send(completion: .finished)
-        subscriptions.removeValue(forKey: id)
+            subject.send(completion: .finished)
+            self.subscriptions.removeValue(forKey: id)
+        }
     }
 }
