@@ -21,6 +21,8 @@ protocol SubscriptionManagerDelegate: AnyObject {
 }
 
 class SubscriptionManager {
+    static let maxRetryCount = 5
+
     func closeProtocol() {
         self.workQueue.async {
             if let webSocketProtocol = self.webSocketProtocol {
@@ -67,8 +69,22 @@ class SubscriptionManager {
         self.webSocketProtocol = webSocketProtocol
     }
 
+    private func createWebsocketAndResend() throws {
+        try self.createWebSocketProtocolIfNeeded()
+        self.subscriptions.forEach { (key: String, value: (Operation, PassthroughSubject<Data, Error>)) in
+            self.webSocketProtocol?.subscribe(operation: value.0, uuid: key)
+        }
+    }
+
     private func retryConnectionIfNeeded() -> Bool {
-        return false
+        guard self.retryCount < Self.maxRetryCount else {
+            return false
+        }
+
+        self.workQueue.asyncAfter(deadline: .now() + 0.5) {
+            try? self.createWebsocketAndResend()
+        }
+        return true
     }
 
     private func closeAllSubscriptions() {
@@ -94,6 +110,7 @@ class SubscriptionManager {
     }
     private var webSocketProtocol: GraphQLWebSocketProtocol? = nil
     private var idleTimer: Timer?
+    private var retryCount = 0
     private let workQueue = DispatchQueue(label: "com.lightspark.subscriptionManagerQueue")
 }
 
@@ -142,5 +159,9 @@ extension SubscriptionManager: GraphQLWebSocketProtocolDelegate {
             subject.send(completion: .finished)
             self.subscriptions.removeValue(forKey: id)
         }
+    }
+
+    func graphQLWebSocketProtocolDidConnected(protocol: GraphQLWebSocketProtocol) {
+        self.retryCount = 0
     }
 }

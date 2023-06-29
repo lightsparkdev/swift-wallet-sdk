@@ -14,7 +14,7 @@ protocol GraphQLWebSocketProtocolDelegate: AnyObject {
     func graphQLWebSocketProtocol(protocol: GraphQLWebSocketProtocol, didReceiveMessage: WebSocketMessage)
     func graphQLWebSocketProtocol(protocol: GraphQLWebSocketProtocol, error: Error)
     func graphQLWebSocketProtocol(protocol: GraphQLWebSocketProtocol, operationComplete: String)
-    // TODO: Add on close
+    func graphQLWebSocketProtocolDidConnected(protocol: GraphQLWebSocketProtocol)
 }
 
 public enum GraphQLWebSocketProtocolError: Error {
@@ -39,11 +39,16 @@ class GraphQLWebSocketProtocol {
         })
     }
 
-    func subscribe(operation: Operation) -> String {
-        let uuid = UUID().uuidString
+    @discardableResult
+    func subscribe(operation: Operation, uuid: String) -> String {
         let message = WebSocketMessage.subscribeMessage(id: uuid, operation: operation)
         self.send(message: message)
         return uuid
+    }
+
+    func subscribe(operation: Operation) -> String {
+        let uuid = UUID().uuidString
+        return self.subscribe(operation: operation, uuid: uuid)
     }
 
     func complete(id: String) {
