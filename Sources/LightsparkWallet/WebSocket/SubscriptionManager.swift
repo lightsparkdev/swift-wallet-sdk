@@ -63,16 +63,22 @@ class SubscriptionManager {
         self.webSocketProtocol = webSocketProtocol
     }
 
+    private func retryConnectionIfNeeded() {
+
+    }
+
     weak var delegate: SubscriptionManagerDelegate?
     private var subscriptions = [String : (Operation, PassthroughSubject<Data, Error>)]() {
         didSet {
-            if subscriptions.isEmpty {
-                idleTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: false, block: { _ in
-                    self.closeProtocol()
-                })
-            } else {
-                idleTimer?.invalidate()
-                idleTimer = nil
+            self.workQueue.async {
+                if self.subscriptions.isEmpty {
+                    self.idleTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: false, block: { _ in
+                        self.closeProtocol()
+                    })
+                } else {
+                    self.idleTimer?.invalidate()
+                    self.idleTimer = nil
+                }
             }
         }
     }
@@ -115,8 +121,8 @@ extension SubscriptionManager: GraphQLWebSocketProtocolDelegate {
 
     func graphQLWebSocketProtocol(protocol: GraphQLWebSocketProtocol, error: Error) {
         // An error occurs, close the protocol
-        // TODO: try to reconnect.
         self.closeProtocol()
+        self.retryConnectionIfNeeded()
     }
 
     func graphQLWebSocketProtocol(protocol: GraphQLWebSocketProtocol, operationComplete id: String) {

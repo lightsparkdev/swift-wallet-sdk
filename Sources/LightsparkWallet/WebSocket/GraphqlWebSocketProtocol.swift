@@ -17,7 +17,13 @@ protocol GraphQLWebSocketProtocolDelegate: AnyObject {
     // TODO: Add on close
 }
 
+public enum GraphQLWebSocketProtocolError: Error {
+    case timeout
+}
+
 class GraphQLWebSocketProtocol {
+    static let ackTimeOut = 60.0
+
     init(webSocketTask: URLSessionWebSocketTask) {
         self.webSocketTask = webSocketTask
         self.messageQueue = MessageQueuePublisher()
@@ -28,6 +34,9 @@ class GraphQLWebSocketProtocol {
     func connectionInit(payload: String? = nil) {
         let message = WebSocketMessage.connectionInitMessage(payload: payload)
         self.reallySend(message: message)
+        self.ackTimer = Timer.scheduledTimer(withTimeInterval: Self.ackTimeOut, repeats: false, block: { _ in
+            self.delegate?.graphQLWebSocketProtocol(protocol: self, error: GraphQLWebSocketProtocolError.timeout)
+        })
     }
 
     func subscribe(operation: Operation) -> String {
@@ -157,5 +166,6 @@ class GraphQLWebSocketProtocol {
     private let webSocketTask: URLSessionWebSocketTask
     private let messageQueue: MessageQueuePublisher<WebSocketMessage>
     private var subscribers = [AnyCancellable]()
+    private var ackTimer: Timer?
     weak var delegate: GraphQLWebSocketProtocolDelegate?
 }
