@@ -19,8 +19,12 @@ let package = Package(
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
+        .binaryTarget(name: "lightspark_cryptoFFI",
+                      url: "https://github.com/lightsparkdev/lightspark-crypto-uniffi/releases/download/0.1.0/lightspark-cryptoFFI.xcframework.zip",
+                      checksum: "e3e79e6590a5d3856181eea9e1bb70a4a5fbbc8200fd9b0c9193b1e7df4f2959"),
         .target(
-            name: "LightsparkWallet"
+            name: "LightsparkWallet",
+            dependencies: ["lightspark_cryptoFFI"]
         ),
         .testTarget(
             name: "LightsparkWalletTests",
