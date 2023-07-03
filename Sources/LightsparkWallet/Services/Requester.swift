@@ -100,9 +100,13 @@ public final class Requester {
     public func subscribePublisher(
         operation: String,
         variables: [AnyHashable: Any?] = [:]
-    ) -> AnyPublisher<Data, Error> {
+    ) throws -> Subscription<Data> {
         let operation = Operation(operation: operation, variables: variables)
-        return self.subscriptionManager.executeGraphqlOperationPublisher(operation: operation)
+        return try self.subscriptionManager.executeGraphqlOperationPublisher(operation: operation)
+    }
+
+    public func subscriptionComplete(id: String) {
+        self.subscriptionManager.subscriptionComplete(id: id)
     }
 
     static var userAgentString: String {

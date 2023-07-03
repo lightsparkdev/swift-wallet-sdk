@@ -19,12 +19,13 @@ public class WalletStatusListener: ObservableObject {
         case fail(Error)
     }
 
-    public init(client: WalletClient) {
+    public init(client: WalletClient) throws {
         self.client = client
+        self.subscription = try client.currentWalletSubscriptionPublisher()
     }
 
     public func start() {
-        self.publisher
+        self.subscription.publisher
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     self?.status = .fail(error)
@@ -41,8 +42,12 @@ public class WalletStatusListener: ObservableObject {
         }
     }
 
+    public func finish() {
+        self.client.subscriptionComplete(id: self.subscription.id)
+    }
+
     private var client: WalletClient
     private var cancellables = Set<AnyCancellable>()
 
-    lazy var publisher: AnyPublisher<Wallet, Error> = client.currentWalletSubscriptionPublisher()
+    private var subscription: Subscription<Wallet>
 }
