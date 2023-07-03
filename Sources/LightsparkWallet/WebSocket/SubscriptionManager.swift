@@ -53,7 +53,7 @@ class SubscriptionManager {
     }
 
     func subscriptionComplete(id: String) {
-        self.workQueue.sync {
+        self.workQueue.async {
             self.webSocketProtocol?.complete(id: id)
             self.subscriptions.removeValue(forKey: id)
         }
