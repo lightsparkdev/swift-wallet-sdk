@@ -8,7 +8,7 @@
 
 import Foundation
 
-let defaultBaseURLString = "https://api.dev.dev.sparkinfra.net/graphql/wallet/2023-05-05"
+let defaultBaseURLString = "https://api.lightspark.com/graphql/wallet/2023-05-05"
 
 public enum URLRequestBuilderError: Error {
     case baseURLStringError
