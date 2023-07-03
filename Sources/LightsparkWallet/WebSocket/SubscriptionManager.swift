@@ -30,6 +30,8 @@ class SubscriptionManager {
                 self.webSocketProtocol = nil
                 self.idleTimer?.invalidate()
                 self.idleTimer = nil
+                self.pingTimer?.invalidate()
+                self.pingTimer = nil
             }
             if !self.retryConnectionIfNeeded() {
                 self.closeAllSubscriptions()
@@ -37,20 +39,23 @@ class SubscriptionManager {
         }
     }
 
-    func executeGraphqlOperationPublisher(operation: Operation) -> AnyPublisher<Data, Error> {
-        self.workQueue.sync {
+    func executeGraphqlOperationPublisher(operation: Operation) throws -> Subscription<Data> {
+        try self.workQueue.sync {
             let subject = PassthroughSubject<Data, Error>()
-            do {
-                try self.createWebSocketProtocolIfNeeded()
-            } catch {
-                return Fail(error: error).eraseToAnyPublisher()
-            }
+            try self.createWebSocketProtocolIfNeeded()
             guard let webSocketProtocol = self.webSocketProtocol else {
-                return Fail(error: SubscriptionError.protocolCreationError).eraseToAnyPublisher()
+                throw SubscriptionError.protocolCreationError
             }
             let id = webSocketProtocol.subscribe(operation: operation)
             self.subscriptions[id] = (operation, subject)
-            return subject.eraseToAnyPublisher()
+            return Subscription(id: id, publisher: subject.eraseToAnyPublisher())
+        }
+    }
+
+    func subscriptionComplete(id: String) {
+        self.workQueue.sync {
+            self.webSocketProtocol?.complete(id: id)
+            self.subscriptions.removeValue(forKey: id)
         }
     }
 
@@ -67,6 +72,9 @@ class SubscriptionManager {
         webSocketProtocol.delegate = self
         webSocketProtocol.connectionInit()
         self.webSocketProtocol = webSocketProtocol
+        self.pingTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true, block: { _ in
+            self.webSocketProtocol?.ping()
+        })
     }
 
     private func createWebsocketAndResend() throws {
@@ -110,6 +118,7 @@ class SubscriptionManager {
     }
     private var webSocketProtocol: GraphQLWebSocketProtocol? = nil
     private var idleTimer: Timer?
+    private var pingTimer: Timer?
     private var retryCount = 0
     private let workQueue = DispatchQueue(label: "com.lightspark.subscriptionManagerQueue")
 }

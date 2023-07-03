@@ -81,7 +81,7 @@ class WalletViewModel: ObservableObject {
 
             let walletClient = WalletClient(accessToken: access)
             self.walletClient = walletClient
-            self.walletStatusListener = WalletStatusListener(client: walletClient)
+            self.walletStatusListener = try! WalletStatusListener(client: walletClient)
             DispatchQueue.main.async {
                 self.viewModelState = .ready
             }

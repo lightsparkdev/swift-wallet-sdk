@@ -776,12 +776,12 @@ extension WalletClient {
         return try await self.executeRequest(operation: self.entityQuery(T.self), variables: variables)
     }
 
-    public func entitySubscriptionPublisher<T: Entity>(id: String) -> AnyPublisher<T, Error> {
+    public func entitySubscriptionPublisher<T: Entity>(id: String) throws -> Subscription<T> {
         let variables = [
             "id": id
         ]
 
-        return self.subscriptionPublisher(operation: self.entitySubscription(T.self), variables: variables)
+        return try self.subscriptionPublisher(operation: self.entitySubscription(T.self), variables: variables)
     }
 
     private func entityQuery(_ t: Entity.Type) -> String {
@@ -1148,8 +1148,12 @@ extension WalletClient {
 
 // Subscription
 extension WalletClient {
-    public func currentWalletSubscriptionPublisher() -> AnyPublisher<Wallet, Error> {
-        return self.subscriptionPublisher(operation: Subscriptions.currentWalletSubscription)
+    public func currentWalletSubscriptionPublisher() throws -> Subscription<Wallet> {
+        return try self.subscriptionPublisher(operation: Subscriptions.currentWalletSubscription)
+    }
+
+    public func subscriptionComplete(id: String) {
+        self.requester.subscriptionComplete(id: id)
     }
 }
 
@@ -1236,8 +1240,11 @@ extension WalletClient {
     public func subscriptionPublisher<T: Decodable>(
         operation: String,
         variables: [AnyHashable: Any?] = [:]
-    ) -> AnyPublisher<T, Error> {
-        return self.requester.subscribePublisher(operation: operation, variables: variables)
+    ) throws -> Subscription<T> {
+
+        let subscription = try self.requester.subscribePublisher(operation: operation, variables: variables)
+
+        return Subscription(id: subscription.id, publisher: subscription.publisher
             .tryMap { data in
                 let response = try JSONDecoder.lightsparkJSONDecoder().decode(Response<T>.self, from: data)
                 if let data = response.data {
@@ -1249,6 +1256,6 @@ extension WalletClient {
                     throw WalletClientError.emptyDataError
                 }
             }
-            .eraseToAnyPublisher()
+            .eraseToAnyPublisher())
     }
 }

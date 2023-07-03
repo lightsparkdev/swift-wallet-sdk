@@ -27,27 +27,27 @@ public class TransactionStatusListener: ObservableObject {
         self.client = client
         self.id = id
 
-        self.publisher = try {
+        self.subscription = try {
             let type = id.components(separatedBy: ":").first
             switch type {
             case "Deposit":
-                let publisher: AnyPublisher<Deposit, Error> = client.entitySubscriptionPublisher(id: id)
-                return publisher.map { $0.status }.eraseToAnyPublisher()
+                let subscription: Subscription<Deposit> = try client.entitySubscriptionPublisher(id: id)
+                return Subscription(id: subscription.id, publisher: subscription.publisher.map { $0.status }.eraseToAnyPublisher())
             case "IncomingPayment":
-                let publisher: AnyPublisher<IncomingPayment, Error> = client.entitySubscriptionPublisher(id: id)
-                return publisher.map { $0.status }.eraseToAnyPublisher()
+                let subscription: Subscription<IncomingPayment> = try client.entitySubscriptionPublisher(id: id)
+                return Subscription(id: subscription.id, publisher: subscription.publisher.map { $0.status }.eraseToAnyPublisher())
             case "OutgoingPayment":
-                let publisher: AnyPublisher<OutgoingPayment, Error> = client.entitySubscriptionPublisher(id: id)
-                return publisher.map { $0.status }.eraseToAnyPublisher()
+                let subscription: Subscription<OutgoingPayment> = try client.entitySubscriptionPublisher(id: id)
+                return Subscription(id: subscription.id, publisher: subscription.publisher.map { $0.status }.eraseToAnyPublisher())
             case "Withdrawal":
-                let publisher: AnyPublisher<Withdrawal, Error> = client.entitySubscriptionPublisher(id: id)
-                return publisher.map { $0.status }.eraseToAnyPublisher()
+                let subscription: Subscription<Withdrawal> = try client.entitySubscriptionPublisher(id: id)
+                return Subscription(id: subscription.id, publisher: subscription.publisher.map { $0.status }.eraseToAnyPublisher())
             case "ChannelOpeningTransaction":
-                let publisher: AnyPublisher<ChannelOpeningTransaction, Error> = client.entitySubscriptionPublisher(id: id)
-                return publisher.map { $0.status }.eraseToAnyPublisher()
+                let subscription: Subscription<ChannelOpeningTransaction> = try client.entitySubscriptionPublisher(id: id)
+                return Subscription(id: subscription.id, publisher: subscription.publisher.map { $0.status }.eraseToAnyPublisher())
             case "ChannelClosingTransaction":
-                let publisher: AnyPublisher<ChannelClosingTransaction, Error> = client.entitySubscriptionPublisher(id: id)
-                return publisher.map { $0.status }.eraseToAnyPublisher()
+                let subscription: Subscription<ChannelClosingTransaction> = try client.entitySubscriptionPublisher(id: id)
+                return Subscription(id: subscription.id, publisher: subscription.publisher.map { $0.status }.eraseToAnyPublisher())
             default:
                 throw TransactionStatusListener.TransactionStatusListenerError.typeNotSupported
             }
@@ -55,7 +55,7 @@ public class TransactionStatusListener: ObservableObject {
     }
 
     public func start() {
-        self.publisher
+        self.subscription.publisher
             .sink { completion in
                 if case .failure(let error) = completion {
                     self.status = .fail(error)
@@ -72,9 +72,13 @@ public class TransactionStatusListener: ObservableObject {
         }
     }
 
+    public func finish() {
+        self.client.subscriptionComplete(id: self.subscription.id)
+    }
+
     private var client: WalletClient
     private var id: String
     private var cancellables = Set<AnyCancellable>()
 
-    private var publisher: AnyPublisher<TransactionStatus, Error>
+    private var subscription: Subscription<TransactionStatus>
 }
