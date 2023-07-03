@@ -776,9 +776,29 @@ extension WalletClient {
         return try await self.executeRequest(operation: self.entityQuery(T.self), variables: variables)
     }
 
+    public func entitySubscriptionPublisher<T: Entity>(id: String) -> AnyPublisher<T, Error> {
+        let variables = [
+            "id": id
+        ]
+
+        return self.subscriptionPublisher(operation: self.entitySubscription(T.self), variables: variables)
+    }
+
     private func entityQuery(_ t: Entity.Type) -> String {
         """
         query getEntity($id: ID!) {
+            entity(id: $id) {
+                ...\(String(describing: t))Fragment
+            }
+        }
+
+        \(t.fragment)
+        """
+    }
+
+    private func entitySubscription(_ t: Entity.Type) -> String {
+        """
+        subscription getEntity($id: ID!) {
             entity(id: $id) {
                 ...\(String(describing: t))Fragment
             }
