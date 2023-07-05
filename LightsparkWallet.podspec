@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'LightsparkWallet'
-  s.version          = '1.2.3'
+  s.version          = '1.3.0'
   s.summary          = 'Lightspark wallet swift SDK'
   s.homepage         = 'https://www.lightspark.com/'
   s.license          = { :type => 'Apache License, Version 2.0', :file => 'LICENSE' }
