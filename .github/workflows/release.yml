@@ -17,8 +17,8 @@ jobs:
         
       - name: Update Version
         run: |
-          sed -i '' "s/let version = \".*\"/let version = \"${inputs.version}\"/" ./Sources/LightsparkWallet/Version.swift
-          sed -i '' "s/s.version          = \'.*\'/s.version          = \'${inputs.version}\'/" LightsparkWallet.podspec
+          sed -i '' "s/let version = \".*\"/let version = \"${{ inputs.version }}\"/" ./Sources/LightsparkWallet/Version.swift
+          sed -i '' "s/s.version          = \'.*\'/s.version          = \'${{ inputs.version }}\'/" LightsparkWallet.podspec
           git add LightsparkWallet.podspec
           git add Sources/LightsparkWallet/Version.swift
           git commit -m "Bump to version ${{ inputs.version }}"
