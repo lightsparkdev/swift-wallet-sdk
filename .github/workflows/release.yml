@@ -1,0 +1,35 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New release version, eg. 0.MINOR.PATCH'
+        required: true
+        type: string
+
+jobs:
+  release:
+    name: Update version and release
+    runs-on: macos-12
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Update Version
+        run: |
+          sed -i '' "s/let version = \".*\"/let version = \"${inputs.version}\"/" ./Sources/LightsparkWallet/Version.swift
+          sed -i '' "s/s.version          = \'.*\'/s.version          = \'${inputs.version}\'/" LightsparkWallet.podspec
+          git add LightsparkWallet.podspec
+          git add Sources/LightsparkWallet/Version.swift
+          git commit -m "Bump to version ${{ inputs.version }}"
+          git push
+          git tag ${{ inputs.version }} -m "Release ${{ inputs.version }}"
+          git push --tags
+          
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ inputs.version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: Release ${{ inputs.version }}
+          prerelease: true
