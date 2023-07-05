@@ -1,5 +1,13 @@
 # Changelog
 
+# v1.3.0
+- Use GraphQL subscription for `WalletStatusListener` and `TransactionStatusListener`.
+    - `WalletStatusListener` initialization throws error.
+- Add crypto operations.
+
+# v1.2.2
+- Fix TransactionStatusListener
+
 # v1.2.1
 - Use CSPRNG for nonce generation.
 
