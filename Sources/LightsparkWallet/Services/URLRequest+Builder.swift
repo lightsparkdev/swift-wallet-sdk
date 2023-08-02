@@ -74,8 +74,9 @@ extension URLRequest {
         return urlRequest
     }
 
-    static func webSocketRequest() throws -> URLRequest {
-        let urlString = defaultBaseURLString.replacingOccurrences(of: "https", with: "wss")
+    static func webSocketRequest(baseURLString: String?) throws -> URLRequest {
+        let urlString = baseURLString?.replacingOccurrences(of: "https", with: "wss") ??
+        defaultBaseURLString.replacingOccurrences(of: "https", with: "wss")
         guard let baseURL = URL(string: urlString) else {
             throw URLRequestBuilderError.baseURLStringError
         }

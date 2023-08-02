@@ -124,6 +124,6 @@ public final class Requester {
 
 extension Requester: SubscriptionManagerDelegate {
     func subscriptionManagerRequestWebSocketTask(subscrptionManager: SubscriptionManager) throws -> URLSessionWebSocketTask {
-        return self.urlSession.webSocketTask(with: try URLRequest.webSocketRequest())
+        return self.urlSession.webSocketTask(with: try URLRequest.webSocketRequest(baseURLString: self.baseURLString))
     }
 }
