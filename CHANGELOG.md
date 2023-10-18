@@ -1,5 +1,8 @@
 # Changelog
 
+# v1.4.0
+- The default AuthStateStorage implementation is replaced with a keychain backed storage class.
+
 # v1.3.0
 - Use GraphQL subscription for `WalletStatusListener` and `TransactionStatusListener`.
     - `WalletStatusListener` initialization throws error.
