@@ -19,7 +19,7 @@ public class JWTAuthManager {
         case parseError
     }
     public init(
-        authStateStorage: AuthStateStorage = UserDefaultAuthStorage(),
+        authStateStorage: AuthStateStorage = KeychainStorage(),
         baseURLString: String? = nil,
         additionalHttpHeaders: [AnyHashable: Any] = [:]
     ) {
@@ -141,7 +141,7 @@ public class JWTAuthManager {
 
         let token = AccessToken(token: data.accessToken, expiration: data.validUntil)
         let tokenData = try JSONEncoder().encode(token)
-        self.authStateStorage.storeAuthStateData(data: tokenData)
+        let _ = self.authStateStorage.storeAuthStateData(data: tokenData)
         return token.token
     }
 

@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol AuthStateStorage {
-    func storeAuthStateData(data: Data)
+    func storeAuthStateData(data: Data) -> Bool
     func getAuthStateData() -> Data?
     func deleteAuthStateData()
 }
