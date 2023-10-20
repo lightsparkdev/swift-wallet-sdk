@@ -3,7 +3,7 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 import Foundation
 
-/// This is a node on the Lightning Network, managed by a third party. The information about this node is public data that has been obtained by observing the Lightning Network.
+/// This object represents a node that exists on the Lightning Network, including nodes not managed by Lightspark. You can retrieve this object to get publicly available information about any node on the Lightning Network.
 public struct GraphNode: Node, Entity, Decodable {
     enum CodingKeys: String, CodingKey {
 

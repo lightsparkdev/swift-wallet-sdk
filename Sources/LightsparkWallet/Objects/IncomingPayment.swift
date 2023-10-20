@@ -3,7 +3,7 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 import Foundation
 
-/// A transaction that was sent to a Lightspark node on the Lightning Network.
+/// This object represents any payment sent to a Lightspark node on the Lightning Network. You can retrieve this object to receive payment related information about a specific payment received by a Lightspark node.
 public struct IncomingPayment: LightningTransaction, Transaction, Entity, Decodable {
     enum CodingKeys: String, CodingKey {
 

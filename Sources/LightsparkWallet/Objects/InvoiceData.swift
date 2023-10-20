@@ -3,7 +3,7 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 import Foundation
 
-/// This object represents the BOLT #11 invoice protocol for Lightning Payments. See https://github.com/lightning/bolts/blob/master/11-payment-encoding.md.
+/// This object represents the data associated with a BOLT #11 invoice. You can retrieve this object to receive the relevant data associated with a specific invoice.
 public struct InvoiceData: PaymentRequestData, Decodable {
     enum CodingKeys: String, CodingKey {
 

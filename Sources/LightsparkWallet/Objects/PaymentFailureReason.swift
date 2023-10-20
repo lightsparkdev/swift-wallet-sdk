@@ -2,6 +2,7 @@
 // This file was automatically generated and should not be edited.
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
+/// This is an enum of the potential reasons why an OutgoingPayment sent from a Lightspark Node may have failed.
 public enum PaymentFailureReason: String, Decodable {
 
     case none = "NONE"

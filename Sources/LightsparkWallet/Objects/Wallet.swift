@@ -83,6 +83,7 @@ extension Wallet {
                 ... on Wallet {
                     transactions(, first: $first, after: $after, created_after_date: $created_after_date, created_before_date: $created_before_date, statuses: $statuses, types: $types) {
                     __typename
+                    wallet_to_transactions_connection_count: count
                     wallet_to_transactions_connection_page_info: page_info {
                         __typename
                         page_info_has_next_page: has_next_page
@@ -90,7 +91,6 @@ extension Wallet {
                         page_info_start_cursor: start_cursor
                         page_info_end_cursor: end_cursor
                     }
-                    wallet_to_transactions_connection_count: count
                     wallet_to_transactions_connection_entities: entities {
                         __typename
                         ... on ChannelClosingTransaction {
@@ -261,6 +261,7 @@ extension Wallet {
                                 __typename
                                 rich_text_text: text
                             }
+                            outgoing_payment_payment_preimage: payment_preimage
                         }
                         ... on Withdrawal {
                             __typename
@@ -304,6 +305,7 @@ extension Wallet {
                 ... on Wallet {
                     payment_requests(, first: $first, after: $after, created_after_date: $created_after_date, created_before_date: $created_before_date) {
                     __typename
+                    wallet_to_payment_requests_connection_count: count
                     wallet_to_payment_requests_connection_page_info: page_info {
                         __typename
                         page_info_has_next_page: has_next_page
@@ -311,7 +313,6 @@ extension Wallet {
                         page_info_start_cursor: start_cursor
                         page_info_end_cursor: end_cursor
                     }
-                    wallet_to_payment_requests_connection_count: count
                     wallet_to_payment_requests_connection_entities: entities {
                         __typename
                         ... on Invoice {

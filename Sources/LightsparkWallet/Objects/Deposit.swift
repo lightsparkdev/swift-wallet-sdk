@@ -3,7 +3,7 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 import Foundation
 
-/// The transaction on Bitcoin blockchain to fund the Lightspark node's wallet.
+/// This object represents a Deposit made to a Lightspark node wallet. This operation occurs for any L1 funding transaction to the wallet. You can retrieve this object to receive detailed information about the deposit.
 public struct Deposit: OnChainTransaction, Transaction, Entity, Decodable {
     enum CodingKeys: String, CodingKey {
 

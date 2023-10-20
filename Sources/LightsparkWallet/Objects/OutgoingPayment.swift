@@ -3,7 +3,7 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 import Foundation
 
-/// A transaction that was sent from a Lightspark node on the Lightning Network.
+/// This object represents a Lightning Network payment sent from a Lightspark Node. You can retrieve this object to receive payment related information about any payment sent from your Lightspark Node on the Lightning Network.
 public struct OutgoingPayment: LightningTransaction, Transaction, Entity, Decodable {
     enum CodingKeys: String, CodingKey {
 
@@ -28,6 +28,8 @@ public struct OutgoingPayment: LightningTransaction, Transaction, Entity, Decoda
         case failureReason = "outgoing_payment_failure_reason"
 
         case failureMessage = "outgoing_payment_failure_message"
+
+        case paymentPreimage = "outgoing_payment_payment_preimage"
 
     }
 
@@ -63,6 +65,9 @@ public struct OutgoingPayment: LightningTransaction, Transaction, Entity, Decoda
 
     /// If applicable, user-facing error message describing why the payment failed.
     public var failureMessage: RichText?
+
+    /// The preimage of the payment.
+    public var paymentPreimage: String?
 
 }
 
@@ -130,6 +135,7 @@ extension OutgoingPayment {
                 __typename
                 rich_text_text: text
             }
+            outgoing_payment_payment_preimage: payment_preimage
         }
         """
 }

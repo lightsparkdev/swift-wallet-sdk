@@ -2,7 +2,7 @@
 // This file was automatically generated and should not be edited.
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-/// Represents the value and unit for an amount of currency.
+/// This object represents the value and unit for an amount of currency.
 public struct CurrencyAmount: Decodable {
     enum CodingKeys: String, CodingKey {
 

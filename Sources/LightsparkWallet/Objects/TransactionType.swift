@@ -2,6 +2,7 @@
 // This file was automatically generated and should not be edited.
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
+/// This is an enum of the potential types of transactions that can be associated with your Lightspark Node.
 public enum TransactionType: String, Decodable {
     /// Transactions initiated from a Lightspark node on Lightning Network.
     case outgoingPayment = "OUTGOING_PAYMENT"

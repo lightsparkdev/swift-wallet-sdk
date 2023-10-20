@@ -3,7 +3,7 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 import Foundation
 
-/// The transaction on Bitcoin blockchain to open a channel on Lightning Network funded by the local Lightspark node.
+/// This is an object representing a transaction which opens a channel on the Lightning Network. This object occurs only for channels funded by the local Lightspark node.
 public struct ChannelOpeningTransaction: OnChainTransaction, Transaction, Entity, Decodable {
     enum CodingKeys: String, CodingKey {
 

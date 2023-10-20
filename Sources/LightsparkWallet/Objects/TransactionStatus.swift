@@ -2,6 +2,7 @@
 // This file was automatically generated and should not be edited.
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
+/// This is an enum of the potential statuses a transaction associated with your Lightspark Node can take.
 public enum TransactionStatus: String, Decodable {
     /// Transaction succeeded..
     case success = "SUCCESS"
