@@ -2,7 +2,7 @@
 // This file was automatically generated and should not be edited.
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-/// An enum that enumerates all possible types of addresses of a node on the Lightning Network.
+/// This is an enum of the potential types of addresses that a node on the Lightning Network can have.
 public enum NodeAddressType: String, Decodable {
 
     case ipv4 = "IPV4"

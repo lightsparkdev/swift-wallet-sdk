@@ -2,7 +2,7 @@
 // This file was automatically generated and should not be edited.
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-/// An object that represents the address of a node on the Lightning Network.
+/// This object represents the address of a node on the Lightning Network.
 public struct NodeAddress: Decodable {
     enum CodingKeys: String, CodingKey {
 

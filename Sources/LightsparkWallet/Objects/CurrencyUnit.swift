@@ -2,6 +2,7 @@
 // This file was automatically generated and should not be edited.
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
+/// This enum identifies the unit of currency associated with a CurrencyAmount.
 public enum CurrencyUnit: String, Decodable {
     /// Bitcoin is the cryptocurrency native to the Bitcoin network. It is used as the native medium for value transfer for the Lightning Network.
     case bitcoin = "BITCOIN"

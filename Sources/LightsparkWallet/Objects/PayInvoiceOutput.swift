@@ -80,6 +80,7 @@ extension PayInvoiceOutput {
                     __typename
                     rich_text_text: text
                 }
+                outgoing_payment_payment_preimage: payment_preimage
             }
         }
         """
