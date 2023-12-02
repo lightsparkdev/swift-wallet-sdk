@@ -13,9 +13,13 @@ public struct WithdrawalRequest: Entity, Decodable {
 
         case updatedAt = "withdrawal_request_updated_at"
 
+        case requestedAmount = "withdrawal_request_requested_amount"
+
         case amount = "withdrawal_request_amount"
 
         case estimatedAmount = "withdrawal_request_estimated_amount"
+
+        case amountWithdrawn = "withdrawal_request_amount_withdrawn"
 
         case bitcoinAddress = "withdrawal_request_bitcoin_address"
 
@@ -36,11 +40,17 @@ public struct WithdrawalRequest: Entity, Decodable {
     /// The date and time when the entity was last updated.
     public var updatedAt: Date
 
+    /// The requested amount of money to be withdrawn. If the requested amount is -1, it means to withdraw all.
+    public var requestedAmount: CurrencyAmount
+
     /// The amount of money that should be withdrawn in this request.
     public var amount: CurrencyAmount
 
     /// If the requested amount is `-1` (i.e. everything), this field may contain an estimate of the amount for the withdrawal.
     public var estimatedAmount: CurrencyAmount?
+
+    /// The actual amount that is withdrawn. It will be set once the request is completed.
+    public var amountWithdrawn: CurrencyAmount?
 
     /// The bitcoin address where the funds should be sent.
     public var bitcoinAddress: String
@@ -64,6 +74,14 @@ extension WithdrawalRequest {
             withdrawal_request_id: id
             withdrawal_request_created_at: created_at
             withdrawal_request_updated_at: updated_at
+            withdrawal_request_requested_amount: requested_amount {
+                __typename
+                currency_amount_original_value: original_value
+                currency_amount_original_unit: original_unit
+                currency_amount_preferred_currency_unit: preferred_currency_unit
+                currency_amount_preferred_currency_value_rounded: preferred_currency_value_rounded
+                currency_amount_preferred_currency_value_approx: preferred_currency_value_approx
+            }
             withdrawal_request_amount: amount {
                 __typename
                 currency_amount_original_value: original_value
@@ -73,6 +91,14 @@ extension WithdrawalRequest {
                 currency_amount_preferred_currency_value_approx: preferred_currency_value_approx
             }
             withdrawal_request_estimated_amount: estimated_amount {
+                __typename
+                currency_amount_original_value: original_value
+                currency_amount_original_unit: original_unit
+                currency_amount_preferred_currency_unit: preferred_currency_unit
+                currency_amount_preferred_currency_value_rounded: preferred_currency_value_rounded
+                currency_amount_preferred_currency_value_approx: preferred_currency_value_approx
+            }
+            withdrawal_request_amount_withdrawn: amount_withdrawn {
                 __typename
                 currency_amount_original_value: original_value
                 currency_amount_original_unit: original_unit
