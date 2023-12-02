@@ -15,6 +15,7 @@ public protocol Connection: Decodable {
 public enum ConnectionEnum {
     case walletToPaymentRequestsConnection(WalletToPaymentRequestsConnection)
     case walletToTransactionsConnection(WalletToTransactionsConnection)
+    case walletToWithdrawalRequestsConnection(WalletToWithdrawalRequestsConnection)
 
 }
 
@@ -33,6 +34,9 @@ extension ConnectionEnum: Decodable {
         case "WalletToTransactionsConnection":
             let walletToTransactionsConnection = try WalletToTransactionsConnection(from: decoder)
             self = .walletToTransactionsConnection(walletToTransactionsConnection)
+        case "WalletToWithdrawalRequestsConnection":
+            let walletToWithdrawalRequestsConnection = try WalletToWithdrawalRequestsConnection(from: decoder)
+            self = .walletToWithdrawalRequestsConnection(walletToWithdrawalRequestsConnection)
 
         default:
             throw DecodingError.dataCorruptedError(
